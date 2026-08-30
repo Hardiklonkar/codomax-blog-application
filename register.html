@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BlogSphere | Register</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="container nav-container">
+
+            <a href="index.html" class="logo">
+                Blog<span>Sphere</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#blogs">Blogs</a>
+                <a href="index.html#features">Features</a>
+                <a href="login.html">Login</a>
+                <a href="register.html" class="nav-btn active">Get Started</a>
+            </nav>
+
+            <button class="menu-btn" id="menuBtn">
+                ☰
+            </button>
+
+        </div>
+    </header>
+
+
+    <!-- REGISTER SECTION -->
+    <main class="auth-section">
+
+        <div class="auth-container">
+
+            <!-- LEFT CONTENT -->
+            <div class="auth-info">
+
+                <span class="hero-badge">
+                    ✨ Join BlogSphere
+                </span>
+
+                <h1>
+                    Start Your
+                    <span>Writing Journey</span>
+                </h1>
+
+                <p>
+                    Create your account and start sharing your
+                    ideas, stories, and knowledge with the world.
+                </p>
+
+                <div class="auth-benefits">
+
+                    <div>
+                        <span>✍️</span>
+                        <div>
+                            <strong>Share Your Ideas</strong>
+                            <small>
+                                Create and publish your own blog posts.
+                            </small>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span>🌎</span>
+                        <div>
+                            <strong>Reach More Readers</strong>
+                            <small>
+                                Connect with readers and creators.
+                            </small>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span>📊</span>
+                        <div>
+                            <strong>Manage Your Content</strong>
+                            <small>
+                                Manage all your blogs from one place.
+                            </small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- REGISTER CARD -->
+            <div class="auth-card">
+
+                <div class="auth-header">
+
+                    <h2>Create Account</h2>
+
+                    <p>
+                        Fill in the details to create your account.
+                    </p>
+
+                </div>
+
+
+                <form id="registerForm">
+
+                    <!-- FULL NAME -->
+                    <div class="form-group">
+
+                        <label for="registerName">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="registerName"
+                            placeholder="Enter your full name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+                    <div class="form-group">
+
+                        <label for="registerEmail">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="registerEmail"
+                            placeholder="Enter your email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+                    <div class="form-group">
+
+                        <label for="registerPassword">
+                            Password
+                        </label>
+
+                        <div class="password-wrapper">
+
+                            <input
+                                type="password"
+                                id="registerPassword"
+                                placeholder="Create a password"
+                                minlength="6"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="toggleRegisterPassword"
+                            >
+                                👁
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CONFIRM PASSWORD -->
+                    <div class="form-group">
+
+                        <label for="confirmPassword">
+                            Confirm Password
+                        </label>
+
+                        <div class="password-wrapper">
+
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                placeholder="Confirm your password"
+                                minlength="6"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="toggleConfirmPassword"
+                            >
+                                👁
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- TERMS -->
+                    <div class="form-options">
+
+                        <label class="remember-me">
+
+                            <input
+                                type="checkbox"
+                                id="terms"
+                                required
+                            >
+
+                            <span>
+                                I agree to the Terms & Conditions
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- REGISTER BUTTON -->
+                    <button
+                        type="submit"
+                        class="primary-btn auth-btn"
+                    >
+                        Create Account →
+                    </button>
+
+                </form>
+
+
+                <!-- DIVIDER -->
+                <div class="auth-divider">
+                    <span>OR</span>
+                </div>
+
+
+                <!-- LOGIN LINK -->
+                <p class="auth-switch">
+
+                    Already have an account?
+
+                    <a href="login.html">
+                        Sign In
+                    </a>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 BlogSphere. All rights reserved.
+            </p>
+
+            <p>
+                Built with ❤️ using HTML, CSS & JavaScript
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="js/script.js"></script>
+
+</body>
+</html>

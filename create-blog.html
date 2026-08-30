@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BlogSphere | Create Blog</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="container nav-container">
+
+            <a href="index.html" class="logo">
+                Blog<span>Sphere</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#blogs">Blogs</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="create-blog.html" class="active nav-btn">
+                    + Create Blog
+                </a>
+            </nav>
+
+            <button class="menu-btn" id="menuBtn">
+                ☰
+            </button>
+
+        </div>
+    </header>
+
+
+    <!-- CREATE BLOG -->
+
+    <main class="create-blog-section">
+
+        <div class="container">
+
+            <div class="create-header">
+
+                <div>
+                    <span class="section-label">
+                        CONTENT CREATOR
+                    </span>
+
+                    <h1>
+                        Create a New <span>Blog</span>
+                    </h1>
+
+                    <p>
+                        Share your ideas, knowledge and stories
+                        with the BlogSphere community.
+                    </p>
+                </div>
+
+                <a href="dashboard.html" class="secondary-btn">
+                    ← Back to Dashboard
+                </a>
+
+            </div>
+
+
+            <div class="create-blog-layout">
+
+
+                <!-- FORM -->
+
+                <section class="create-blog-card">
+
+                    <form id="blogForm">
+
+                        <!-- TITLE -->
+
+                        <div class="form-group">
+
+                            <label for="blogTitle">
+                                Blog Title
+                            </label>
+
+                            <input
+                                type="text"
+                                id="blogTitle"
+                                placeholder="Enter an attractive blog title"
+                                maxlength="100"
+                                required
+                            >
+
+                            <small class="input-hint">
+                                Create a clear and engaging title.
+                            </small>
+
+                        </div>
+
+
+                        <!-- CATEGORY -->
+
+                        <div class="form-row">
+
+                            <div class="form-group">
+
+                                <label for="blogCategory">
+                                    Category
+                                </label>
+
+                                <select id="blogCategory" required>
+
+                                    <option value="">
+                                        Select category
+                                    </option>
+
+                                    <option value="Technology">
+                                        Technology
+                                    </option>
+
+                                    <option value="Programming">
+                                        Programming
+                                    </option>
+
+                                    <option value="Web Development">
+                                        Web Development
+                                    </option>
+
+                                    <option value="Career">
+                                        Career
+                                    </option>
+
+                                    <option value="AI & ML">
+                                        AI & ML
+                                    </option>
+
+                                    <option value="Other">
+                                        Other
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="readTime">
+                                    Estimated Read Time
+                                </label>
+
+                                <select id="readTime" required>
+
+                                    <option value="">
+                                        Select time
+                                    </option>
+
+                                    <option value="3 min">
+                                        3 min read
+                                    </option>
+
+                                    <option value="5 min">
+                                        5 min read
+                                    </option>
+
+                                    <option value="7 min">
+                                        7 min read
+                                    </option>
+
+                                    <option value="10 min">
+                                        10 min read
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- IMAGE URL -->
+
+                        <div class="form-group">
+
+                            <label for="blogImage">
+                                Cover Image URL
+                            </label>
+
+                            <input
+                                type="url"
+                                id="blogImage"
+                                placeholder="https://example.com/image.jpg"
+                            >
+
+                            <small class="input-hint">
+                                Optional — add a cover image for your blog.
+                            </small>
+
+                        </div>
+
+
+                        <!-- CONTENT -->
+
+                        <div class="form-group">
+
+                            <label for="blogContent">
+                                Blog Content
+                            </label>
+
+                            <textarea
+                                id="blogContent"
+                                rows="12"
+                                placeholder="Start writing your blog here..."
+                                required
+                            ></textarea>
+
+                        </div>
+
+
+                        <!-- TAGS -->
+
+                        <div class="form-group">
+
+                            <label for="blogTags">
+                                Tags
+                            </label>
+
+                            <input
+                                type="text"
+                                id="blogTags"
+                                placeholder="e.g. javascript, web development, coding"
+                            >
+
+                            <small class="input-hint">
+                                Separate multiple tags using commas.
+                            </small>
+
+                        </div>
+
+
+                        <!-- ACTIONS -->
+
+                        <div class="create-actions">
+
+                            <button
+                                type="button"
+                                class="secondary-btn"
+                                id="saveDraftBtn"
+                            >
+                                Save as Draft
+                            </button>
+
+                            <button
+                                type="submit"
+                                class="primary-btn"
+                            >
+                                Publish Blog →
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </section>
+
+
+                <!-- PREVIEW -->
+
+                <aside class="blog-preview-panel">
+
+                    <div class="preview-heading">
+
+                        <span class="section-label">
+                            LIVE PREVIEW
+                        </span>
+
+                        <h2>
+                            Your Blog
+                        </h2>
+
+                    </div>
+
+
+                    <article class="live-preview">
+
+                        <div class="preview-image" id="previewImage">
+
+                            📝
+
+                        </div>
+
+                        <div class="live-preview-content">
+
+                            <span
+                                class="category"
+                                id="previewCategory"
+                            >
+                                Category
+                            </span>
+
+                            <h3 id="previewTitle">
+                                Your blog title will appear here
+                            </h3>
+
+                            <p id="previewContent">
+                                Start writing your blog content
+                                and see the preview here.
+                            </p>
+
+                            <div class="preview-meta">
+
+                                <div class="author">
+
+                                    <div class="author-avatar">
+                                        H
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            Hardik Lonkar
+                                        </strong>
+
+                                        <small>
+                                            Just now
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </aside>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 BlogSphere. All rights reserved.
+            </p>
+
+            <p>
+                Built with ❤️ using HTML, CSS & JavaScript
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="js/script.js"></script>
+
+</body>
+</html>
