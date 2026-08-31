@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>BlogSphere | Blog Details</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        <div class="container nav-container">
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+                Blog<span>Sphere</span>
+            </a>
+
+
+            <nav class="nav-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="index.html#blogs">
+                    Blogs
+                </a>
+
+                <a href="dashboard.html">
+                    Dashboard
+                </a>
+
+                <a
+                    href="create-blog.html"
+                    class="nav-btn"
+                >
+                    + Create Blog
+                </a>
+
+            </nav>
+
+
+            <button
+                class="menu-btn"
+                id="menuBtn"
+                type="button"
+            >
+                ☰
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= BLOG DETAILS ================= -->
+
+    <main class="blog-details-section">
+
+        <div class="container">
+
+
+            <!-- BACK TO BLOGS -->
+
+            <div class="blog-back">
+
+                <a
+                    href="index.html#blogs"
+                    class="secondary-btn"
+                >
+                    ← Back to Blogs
+                </a>
+
+            </div>
+
+
+
+            <!-- ================= LOADING ================= -->
+
+            <div
+                id="blogLoading"
+                class="blog-loading"
+            >
+
+                <h2>
+                    Loading blog...
+                </h2>
+
+                <p>
+                    Please wait while we load the blog.
+                </p>
+
+            </div>
+
+
+
+            <!-- ================= ERROR ================= -->
+
+            <div
+                id="blogError"
+                class="blog-error"
+                style="display: none;"
+            >
+
+                <h2>
+                    Blog Not Found
+                </h2>
+
+                <p id="blogErrorMessage">
+                    Unable to load this blog.
+                </p>
+
+                <a
+                    href="index.html#blogs"
+                    class="primary-btn"
+                >
+                    ← Back to Blogs
+                </a>
+
+            </div>
+
+
+
+            <!-- ================= BLOG ================= -->
+
+            <article
+                id="blogDetails"
+                class="blog-details-card"
+                style="display: none;"
+            >
+
+
+                <!-- COVER IMAGE -->
+
+                <div
+                    id="detailCoverImage"
+                    class="blog-detail-image"
+                >
+                    📝
+                </div>
+
+
+
+                <!-- BLOG CONTENT -->
+
+                <div class="blog-detail-content">
+
+
+                    <!-- CATEGORY -->
+
+                    <span
+                        id="detailCategory"
+                        class="category"
+                    >
+                        General
+                    </span>
+
+
+
+                    <!-- TITLE -->
+
+                    <h1 id="detailTitle">
+                        Blog Title
+                    </h1>
+
+
+
+                    <!-- AUTHOR -->
+
+                    <div class="blog-detail-author">
+
+                        <div
+                            id="detailAvatar"
+                            class="author-avatar"
+                        >
+                            A
+                        </div>
+
+
+                        <div>
+
+                            <strong id="detailAuthor">
+                                Author
+                            </strong>
+
+                            <small id="detailDate">
+                                Date
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- TAGS -->
+
+                    <div
+                        id="detailTags"
+                        class="blog-detail-tags"
+                    >
+                    </div>
+
+
+
+                    <!-- DIVIDER -->
+
+                    <div class="blog-detail-divider">
+                    </div>
+
+
+
+                    <!-- FULL CONTENT -->
+
+                    <div
+                        id="detailContent"
+                        class="blog-full-content"
+                    >
+                    </div>
+
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 BlogSphere. All rights reserved.
+            </p>
+
+            <p>
+                Built with ❤️ using HTML, CSS & JavaScript
+            </p>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- ================= MAIN SCRIPT ================= -->
+
+    <script src="js/script.js"></script>
+
+
+
+    <!-- ================= SINGLE BLOG SCRIPT ================= -->
+
+    <script>
+
+        async function loadSingleBlog() {
+
+            const loading =
+                document.getElementById("blogLoading");
+
+            const errorBox =
+                document.getElementById("blogError");
+
+            const errorMessage =
+                document.getElementById("blogErrorMessage");
+
+            const blogDetails =
+                document.getElementById("blogDetails");
+
+
+            /*
+             * Get blog ID from URL
+             *
+             * Example:
+             * blog-details.html?id=2
+             */
+
+            const params =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+            const blogId =
+                params.get("id");
+
+
+            /*
+             * Check blog ID
+             */
+
+            if (!blogId) {
+
+                loading.style.display = "none";
+
+                errorBox.style.display = "block";
+
+                errorMessage.textContent =
+                    "Blog ID is missing from the URL.";
+
+                return;
+            }
+
+
+            /*
+             * Load blog from backend
+             */
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_URL}/api/blogs/${encodeURIComponent(blogId)}`
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                console.log(
+                    "Blog Details Response:",
+                    data
+                );
+
+
+                /*
+                 * Check API response
+                 */
+
+                if (
+                    !response.ok ||
+                    !data.success ||
+                    !data.blog
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "Blog not found."
+                    );
+
+                }
+
+
+                const blog =
+                    data.blog;
+
+
+                /*
+                 * Get HTML elements
+                 */
+
+                const title =
+                    document.getElementById(
+                        "detailTitle"
+                    );
+
+                const category =
+                    document.getElementById(
+                        "detailCategory"
+                    );
+
+                const author =
+                    document.getElementById(
+                        "detailAuthor"
+                    );
+
+                const date =
+                    document.getElementById(
+                        "detailDate"
+                    );
+
+                const avatar =
+                    document.getElementById(
+                        "detailAvatar"
+                    );
+
+                const content =
+                    document.getElementById(
+                        "detailContent"
+                    );
+
+                const coverImage =
+                    document.getElementById(
+                        "detailCoverImage"
+                    );
+
+                const tagsContainer =
+                    document.getElementById(
+                        "detailTags"
+                    );
+
+
+                /*
+                 * TITLE
+                 */
+
+                title.textContent =
+                    blog.title ||
+                    "Untitled Blog";
+
+
+                /*
+                 * CATEGORY
+                 */
+
+                category.textContent =
+                    blog.category ||
+                    "General";
+
+
+                /*
+                 * AUTHOR
+                 */
+
+                const authorName =
+                    blog.author ||
+                    "Unknown Author";
+
+                author.textContent =
+                    authorName;
+
+
+                avatar.textContent =
+                    authorName
+                        .charAt(0)
+                        .toUpperCase();
+
+
+                /*
+                 * DATE
+                 */
+
+                if (blog.created_at) {
+
+                    date.textContent =
+                        new Date(
+                            blog.created_at
+                        ).toLocaleDateString(
+                            "en-US",
+                            {
+                                month: "long",
+                                day: "numeric",
+                                year: "numeric"
+                            }
+                        );
+
+                } else {
+
+                    date.textContent =
+                        "";
+
+                }
+
+
+                /*
+                 * COVER IMAGE
+                 */
+
+                if (blog.cover_image) {
+
+                    coverImage.style.backgroundImage =
+                        `url("${blog.cover_image}")`;
+
+                    coverImage.style.backgroundSize =
+                        "cover";
+
+                    coverImage.style.backgroundPosition =
+                        "center";
+
+                    coverImage.style.backgroundRepeat =
+                        "no-repeat";
+
+                    coverImage.textContent =
+                        "";
+
+                } else {
+
+                    coverImage.style.backgroundImage =
+                        "none";
+
+                    coverImage.textContent =
+                        "📝";
+
+                }
+
+
+                /*
+                 * BLOG CONTENT
+                 */
+
+                content.textContent =
+                    blog.content ||
+                    "No content available.";
+
+
+                /*
+                 * TAGS
+                 */
+
+                tagsContainer.innerHTML =
+                    "";
+
+
+                let tags = [];
+
+
+                if (Array.isArray(blog.tags)) {
+
+                    tags =
+                        blog.tags;
+
+                } else if (
+                    typeof blog.tags === "string" &&
+                    blog.tags.trim() !== ""
+                ) {
+
+                    try {
+
+                        const parsedTags =
+                            JSON.parse(blog.tags);
+
+                        if (
+                            Array.isArray(
+                                parsedTags
+                            )
+                        ) {
+
+                            tags =
+                                parsedTags;
+
+                        } else {
+
+                            tags =
+                                blog.tags
+                                    .split(",")
+                                    .map(
+                                        tag =>
+                                            tag.trim()
+                                    )
+                                    .filter(
+                                        tag =>
+                                            tag !== ""
+                                    );
+
+                        }
+
+                    } catch (error) {
+
+                        tags =
+                            blog.tags
+                                .split(",")
+                                .map(
+                                    tag =>
+                                        tag.trim()
+                                )
+                                .filter(
+                                    tag =>
+                                        tag !== ""
+                                );
+
+                    }
+
+                }
+
+
+                /*
+                 * Display tags
+                 */
+
+                tags.forEach(
+                    tag => {
+
+                        const tagElement =
+                            document.createElement(
+                                "span"
+                            );
+
+                        tagElement.className =
+                            "blog-tag";
+
+                        tagElement.textContent =
+                            `#${tag}`;
+
+                        tagsContainer.appendChild(
+                            tagElement
+                        );
+
+                    }
+                );
+
+
+                /*
+                 * SHOW BLOG
+                 */
+
+                loading.style.display =
+                    "none";
+
+                errorBox.style.display =
+                    "none";
+
+                blogDetails.style.display =
+                    "block";
+
+
+                /*
+                 * Update browser title
+                 */
+
+                document.title =
+                    `BlogSphere | ${blog.title || "Blog Details"}`;
+
+
+            } catch (error) {
+
+                console.error(
+                    "Single Blog Error:",
+                    error
+                );
+
+
+                loading.style.display =
+                    "none";
+
+                blogDetails.style.display =
+                    "none";
+
+                errorBox.style.display =
+                    "block";
+
+
+                errorMessage.textContent =
+                    error.message ||
+                    "Unable to load blog.";
+
+            }
+
+        }
+
+
+        /*
+         * Start loading blog
+         */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            loadSingleBlog
+        );
+
+    </script>
+
+
+</body>
+
+</html>
