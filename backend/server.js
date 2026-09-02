@@ -1,8 +1,10 @@
+
 require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const { createClient } = require("@supabase/supabase-js");
 
 const app = express();
@@ -17,12 +19,21 @@ console.log(
     "SUPABASE KEY EXISTS:",
     !!process.env.SUPABASE_SERVICE_ROLE_KEY
 );
+console.log(
+    "JWT SECRET EXISTS:",
+    !!process.env.JWT_SECRET
+);
+console.log(
+    "JWT SECRET LENGTH:",
+    process.env.JWT_SECRET?.length
+);
 
 if (
     !process.env.SUPABASE_URL ||
-    !process.env.SUPABASE_SERVICE_ROLE_KEY
+    !process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    !process.env.JWT_SECRET
 ) {
-    console.error("❌ Supabase environment variables are missing.");
+    console.error("❌ Required environment variables are missing.");
     process.exit(1);
 }
 
@@ -41,6 +52,64 @@ const supabase = createClient(
 
 app.use(cors());
 app.use(express.json());
+
+// =========================
+// JWT AUTH MIDDLEWARE
+// =========================
+
+const authenticateToken = (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+
+        console.log("=================================");
+        console.log("AUTH HEADER:", authHeader);
+
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            console.log("❌ NO BEARER TOKEN");
+
+            return res.status(401).json({
+                success: false,
+                message: "Access denied. No token provided."
+            });
+        }
+
+        const token = authHeader.split(" ")[1];
+
+        console.log(
+            "TOKEN RECEIVED:",
+            token
+                ? `${token.substring(0, 20)}...${token.substring(token.length - 10)}`
+                : "NO TOKEN"
+        );
+
+        console.log(
+            "JWT SECRET LENGTH:",
+            process.env.JWT_SECRET?.length
+        );
+
+        const decoded = jwt.verify(
+            token,
+            process.env.JWT_SECRET
+        );
+
+        console.log("✅ TOKEN VERIFIED");
+        console.log("DECODED USER:", decoded);
+        console.log("=================================");
+
+        req.user = decoded;
+
+        next();
+
+    } catch (error) {
+        console.error("❌ AUTH ERROR:", error.message);
+        console.log("=================================");
+
+        return res.status(401).json({
+            success: false,
+            message: "Invalid or expired token"
+        });
+    }
+};
 
 // =========================
 // HOME
@@ -214,9 +283,27 @@ app.post("/api/auth/login", async (req, res) => {
             });
         }
 
+        // =========================
+        // CREATE JWT TOKEN
+        // =========================
+
+        const token = jwt.sign(
+            {
+                userId: data.id,
+                email: data.email
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "1d"
+            }
+        );
+
+        console.log("✅ JWT CREATED FOR USER:", data.id);
+
         return res.status(200).json({
             success: true,
             message: "Login successful",
+            token,
             user: {
                 id: data.id,
                 name: data.name,
@@ -235,73 +322,139 @@ app.post("/api/auth/login", async (req, res) => {
 });
 
 // =====================================================
-// CREATE BLOG
+// GET CURRENT USER PROFILE
 // =====================================================
 
-app.post("/api/blogs", async (req, res) => {
-    console.log("CREATE BLOG BODY:", req.body);
+app.get(
+    "/api/auth/profile",
+    authenticateToken,
+    async (req, res) => {
 
-    try {
-        const {
-            title,
-            category,
-            content,
-            author,
-            tags,
-            coverImage,
-            readTime
-        } = req.body;
+        console.log("PROFILE USER ID:", req.user.userId);
 
-        if (!title || !category || !content || !author) {
-            return res.status(400).json({
-                success: false,
-                message:
-                    "Title, category, content and author are required"
+        try {
+            const { data, error } = await supabase
+                .from("users")
+                .select("id, name, email")
+                .eq("id", req.user.userId)
+                .single();
+
+            if (error || !data) {
+                return res.status(404).json({
+                    success: false,
+                    message: "User not found"
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                user: data
             });
-        }
 
-        const {
-            data,
-            error
-        } = await supabase
-            .from("blogs")
-            .insert({
-                title: title.trim(),
-                category: category.trim(),
-                content: content.trim(),
-                author: author.trim(),
-                tags: Array.isArray(tags) ? tags : [],
-                cover_image: coverImage?.trim() || null,
-                read_time: readTime?.trim() || null
-            })
-            .select()
-            .single();
-
-        if (error) {
-            console.error("CREATE BLOG ERROR:", error);
+        } catch (error) {
+            console.error("PROFILE ERROR:", error);
 
             return res.status(500).json({
                 success: false,
-                message: "Database error",
-                error: error.message
+                message: "Server error"
             });
         }
-
-        return res.status(201).json({
-            success: true,
-            message: "Blog created successfully",
-            blog: data
-        });
-
-    } catch (error) {
-        console.error("CREATE BLOG SERVER ERROR:", error);
-
-        return res.status(500).json({
-            success: false,
-            message: "Server error"
-        });
     }
-});
+);
+
+// =====================================================
+// CREATE BLOG - PROTECTED
+// =====================================================
+
+app.post(
+    "/api/blogs",
+    authenticateToken,
+    async (req, res) => {
+
+        console.log("CREATE BLOG BODY:", req.body);
+
+        try {
+            const {
+                title,
+                category,
+                content,
+                tags,
+                coverImage,
+                readTime
+            } = req.body;
+
+            if (!title || !category || !content) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Title, category and content are required"
+                });
+            }
+
+            const {
+                data: user,
+                error: userError
+            } = await supabase
+                .from("users")
+                .select("id, name")
+                .eq("id", req.user.userId)
+                .single();
+
+            if (userError || !user) {
+                return res.status(404).json({
+                    success: false,
+                    message: "User not found"
+                });
+            }
+
+            const {
+                data,
+                error
+            } = await supabase
+                .from("blogs")
+                .insert({
+                    title: title.trim(),
+                    category: category.trim(),
+                    content: content.trim(),
+                    author: user.name,
+                    tags: Array.isArray(tags) ? tags : [],
+                    cover_image:
+                        coverImage?.trim() || null,
+                    read_time:
+                        readTime?.trim() || null
+                })
+                .select()
+                .single();
+
+            if (error) {
+                console.error("CREATE BLOG ERROR:", error);
+
+                return res.status(500).json({
+                    success: false,
+                    message: "Database error",
+                    error: error.message
+                });
+            }
+
+            return res.status(201).json({
+                success: true,
+                message: "Blog created successfully",
+                blog: data
+            });
+
+        } catch (error) {
+            console.error(
+                "CREATE BLOG SERVER ERROR:",
+                error
+            );
+
+            return res.status(500).json({
+                success: false,
+                message: "Server error"
+            });
+        }
+    }
+);
 
 // =====================================================
 // GET ALL BLOGS
@@ -336,7 +489,10 @@ app.get("/api/blogs", async (req, res) => {
         });
 
     } catch (error) {
-        console.error("GET BLOGS SERVER ERROR:", error);
+        console.error(
+            "GET BLOGS SERVER ERROR:",
+            error
+        );
 
         return res.status(500).json({
             success: false,
@@ -344,6 +500,76 @@ app.get("/api/blogs", async (req, res) => {
         });
     }
 });
+
+// =====================================================
+// GET MY BLOGS - PROTECTED DASHBOARD
+// =====================================================
+
+app.get(
+    "/api/blogs/my-blogs",
+    authenticateToken,
+    async (req, res) => {
+
+        try {
+            const {
+                data: user,
+                error: userError
+            } = await supabase
+                .from("users")
+                .select("name")
+                .eq("id", req.user.userId)
+                .single();
+
+            if (userError || !user) {
+                return res.status(404).json({
+                    success: false,
+                    message: "User not found"
+                });
+            }
+
+            const {
+                data,
+                error
+            } = await supabase
+                .from("blogs")
+                .select("*")
+                .eq("author", user.name)
+                .order("created_at", {
+                    ascending: false
+                });
+
+            if (error) {
+                console.error(
+                    "GET MY BLOGS ERROR:",
+                    error
+                );
+
+                return res.status(500).json({
+                    success: false,
+                    message: "Database error",
+                    error: error.message
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                count: data.length,
+                blogs: data
+            });
+
+        } catch (error) {
+            console.error(
+                "GET MY BLOGS SERVER ERROR:",
+                error
+            );
+
+            return res.status(500).json({
+                success: false,
+                message: "Server error"
+            });
+        }
+    }
+);
 
 // =====================================================
 // GET SINGLE BLOG
@@ -376,88 +602,10 @@ app.get("/api/blogs/:id", async (req, res) => {
         });
 
     } catch (error) {
-        console.error("GET SINGLE BLOG ERROR:", error);
-
-        return res.status(500).json({
-            success: false,
-            message: "Server error"
-        });
-    }
-});
-
-// =====================================================
-// UPDATE BLOG
-// =====================================================
-
-app.put("/api/blogs/:id", async (req, res) => {
-    console.log("UPDATE BLOG ID:", req.params.id);
-    console.log("UPDATE BLOG BODY:", req.body);
-
-    try {
-        const { id } = req.params;
-
-        const {
-            title,
-            category,
-            content,
-            author,
-            tags,
-            coverImage,
-            readTime
-        } = req.body;
-
-        if (!title || !category || !content || !author) {
-            return res.status(400).json({
-                success: false,
-                message:
-                    "Title, category, content and author are required"
-            });
-        }
-
-        const {
-            data,
+        console.error(
+            "GET SINGLE BLOG ERROR:",
             error
-        } = await supabase
-            .from("blogs")
-            .update({
-                title: title.trim(),
-                category: category.trim(),
-                content: content.trim(),
-                author: author.trim(),
-                tags: Array.isArray(tags) ? tags : [],
-                cover_image: coverImage?.trim() || null,
-                read_time: readTime?.trim() || null,
-                updated_at: new Date().toISOString()
-            })
-            .eq("id", id)
-            .select()
-            .single();
-
-        if (error) {
-            console.error("UPDATE BLOG ERROR:", error);
-
-            return res.status(500).json({
-                success: false,
-                message: "Database error",
-                error: error.message
-            });
-        }
-
-        if (!data) {
-            return res.status(404).json({
-                success: false,
-                message: "Blog not found"
-            });
-        }
-
-        return res.status(200).json({
-            success: true,
-            message: "Blog updated successfully",
-            blog: data
-        });
-
-    } catch (error) {
-        console.error("UPDATE BLOG SERVER ERROR:", error);
+        );
 
         return res.status(500).json({
             success: false,
@@ -467,72 +615,236 @@ app.put("/api/blogs/:id", async (req, res) => {
 });
 
 // =====================================================
-// DELETE BLOG
+// UPDATE BLOG - PROTECTED
 // =====================================================
 
-app.delete("/api/blogs/:id", async (req, res) => {
-    console.log("DELETE BLOG ID:", req.params.id);
+app.put(
+    "/api/blogs/:id",
+    authenticateToken,
+    async (req, res) => {
 
-    try {
-        const { id } = req.params;
+        console.log("UPDATE BLOG ID:", req.params.id);
+        console.log("UPDATE BLOG BODY:", req.body);
 
-        const {
-            data: existingBlog,
-            error: findError
-        } = await supabase
-            .from("blogs")
-            .select("id")
-            .eq("id", id)
-            .maybeSingle();
+        try {
+            const { id } = req.params;
 
-        if (findError) {
-            console.error("FIND BLOG ERROR:", findError);
+            const {
+                title,
+                category,
+                content,
+                tags,
+                coverImage,
+                readTime
+            } = req.body;
+
+            if (!title || !category || !content) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Title, category and content are required"
+                });
+            }
+
+            const {
+                data: user,
+                error: userError
+            } = await supabase
+                .from("users")
+                .select("name")
+                .eq("id", req.user.userId)
+                .single();
+
+            if (userError || !user) {
+                return res.status(404).json({
+                    success: false,
+                    message: "User not found"
+                });
+            }
+
+            const {
+                data: existingBlog,
+                error: findError
+            } = await supabase
+                .from("blogs")
+                .select("id")
+                .eq("id", id)
+                .eq("author", user.name)
+                .maybeSingle();
+
+            if (findError) {
+                return res.status(500).json({
+                    success: false,
+                    message: "Database error",
+                    error: findError.message
+                });
+            }
+
+            if (!existingBlog) {
+                return res.status(403).json({
+                    success: false,
+                    message:
+                        "You are not allowed to update this blog"
+                });
+            }
+
+            const {
+                data,
+                error
+            } = await supabase
+                .from("blogs")
+                .update({
+                    title: title.trim(),
+                    category: category.trim(),
+                    content: content.trim(),
+                    tags: Array.isArray(tags)
+                        ? tags
+                        : [],
+                    cover_image:
+                        coverImage?.trim() || null,
+                    read_time:
+                        readTime?.trim() || null,
+                    updated_at:
+                        new Date().toISOString()
+                })
+                .eq("id", id)
+                .select()
+                .single();
+
+            if (error) {
+                console.error(
+                    "UPDATE BLOG ERROR:",
+                    error
+                );
+
+                return res.status(500).json({
+                    success: false,
+                    message: "Database error",
+                    error: error.message
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                message: "Blog updated successfully",
+                blog: data
+            });
+
+        } catch (error) {
+            console.error(
+                "UPDATE BLOG SERVER ERROR:",
+                error
+            );
 
             return res.status(500).json({
                 success: false,
-                message: "Database error",
-                error: findError.message
+                message: "Server error"
             });
         }
-
-        if (!existingBlog) {
-            return res.status(404).json({
-                success: false,
-                message: "Blog not found"
-            });
-        }
-
-        const {
-            error
-        } = await supabase
-            .from("blogs")
-            .delete()
-            .eq("id", id);
-
-        if (error) {
-            console.error("DELETE BLOG ERROR:", error);
-
-            return res.status(500).json({
-                success: false,
-                message: "Database error",
-                error: error.message
-            });
-        }
-
-        return res.status(200).json({
-            success: true,
-            message: "Blog deleted successfully"
-        });
-
-    } catch (error) {
-        console.error("DELETE BLOG SERVER ERROR:", error);
-
-        return res.status(500).json({
-            success: false,
-            message: "Server error"
-        });
     }
-});
+);
+
+// =====================================================
+// DELETE BLOG - PROTECTED
+// =====================================================
+
+app.delete(
+    "/api/blogs/:id",
+    authenticateToken,
+    async (req, res) => {
+
+        console.log(
+            "DELETE BLOG ID:",
+            req.params.id
+        );
+
+        try {
+            const { id } = req.params;
+
+            const {
+                data: user,
+                error: userError
+            } = await supabase
+                .from("users")
+                .select("name")
+                .eq("id", req.user.userId)
+                .single();
+
+            if (userError || !user) {
+                return res.status(404).json({
+                    success: false,
+                    message: "User not found"
+                });
+            }
+
+            const {
+                data: existingBlog,
+                error: findError
+            } = await supabase
+                .from("blogs")
+                .select("id")
+                .eq("id", id)
+                .eq("author", user.name)
+                .maybeSingle();
+
+            if (findError) {
+                console.error(
+                    "FIND BLOG ERROR:",
+                    findError
+                );
+
+                return res.status(500).json({
+                    success: false,
+                    message: "Database error",
+                    error: findError.message
+                });
+            }
+
+            if (!existingBlog) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Blog not found"
+                });
+            }
+
+            const {
+                error
+            } = await supabase
+                .from("blogs")
+                .delete()
+                .eq("id", id);
+
+            if (error) {
+                console.error(
+                    "DELETE BLOG ERROR:",
+                    error
+                );
+
+                return res.status(500).json({
+                    success: false,
+                    message: "Database error",
+                    error: error.message
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                message: "Blog deleted successfully"
+            });
+
+        } catch (error) {
+            console.error(
+                "DELETE BLOG SERVER ERROR:",
+                error
+            );
+
+            return res.status(500).json({
+                success: false,
+                message: "Server error"
+            });
+        }
+    }
+);
 
 // =====================================================
 // START SERVER
@@ -543,3 +855,4 @@ app.listen(PORT, () => {
         `🚀 BlogSphere Backend running on http://localhost:${PORT}`
     );
 });
+

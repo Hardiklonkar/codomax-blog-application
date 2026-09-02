@@ -1,490 +1,501 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
+<!DOCTYPE html> 
+<html lang="en"> 
+ 
+<head> 
+ 
+    <meta charset="UTF-8"> 
+ 
+    <meta 
+        name="viewport" 
+        content="width=device-width, initial-scale=1.0" 
+    > 
+ 
+    <title>BlogSphere | Dashboard</title> 
+ 
+    <link 
+        rel="stylesheet" 
+        href="css/style.css" 
+    > 
+ 
+</head> 
+ 
+ 
+<body> 
+ 
+ 
+    <!-- ================= NAVBAR ================= --> 
+ 
+    <header class="navbar"> 
+ 
+        <div class="container nav-container"> 
+ 
+            <a 
+                href="index.html" 
+                class="logo" 
+            > 
+                Blog<span>Sphere</span> 
+            </a> 
+ 
+ 
+            <nav class="nav-links"> 
+ 
+                <a href="index.html"> 
+                    Home 
+                </a> 
+ 
+                <a href="index.html#blogs"> 
+                    Blogs 
+                </a> 
+ 
+                <a 
+                    href="dashboard.html" 
+                    class="active" 
+                > 
+                    Dashboard 
+                </a> 
+ 
+                <a 
+                    href="create-blog.html" 
+                    class="nav-btn" 
+                > 
+                    + Create Blog 
+                </a> 
 
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>BlogSphere | Dashboard</title>
-
-    <link
-        rel="stylesheet"
-        href="css/style.css"
-    >
-
-</head>
-
-
-<body>
-
-
-    <!-- ================= NAVBAR ================= -->
-
-    <header class="navbar">
-
-        <div class="container nav-container">
-
-            <a
-                href="index.html"
-                class="logo"
-            >
-                Blog<span>Sphere</span>
-            </a>
-
-
-            <nav class="nav-links">
-
-                <a href="index.html">
-                    Home
-                </a>
-
-                <a href="index.html#blogs">
-                    Blogs
-                </a>
-
-                <a
-                    href="dashboard.html"
-                    class="active"
-                >
-                    Dashboard
-                </a>
-
-                <a
-                    href="create-blog.html"
+                <!-- LOGOUT BUTTON -->
+                <button
+                    type="button"
+                    id="logoutBtn"
                     class="nav-btn"
                 >
-                    + Create Blog
-                </a>
-
-            </nav>
-
-
-            <button
-                class="menu-btn"
-                id="menuBtn"
-                type="button"
-            >
-                ☰
-            </button>
-
-        </div>
-
-    </header>
-
-
-
-    <!-- ================= DASHBOARD ================= -->
-
-    <main class="dashboard-section">
-
-        <div class="container">
-
-
-            <!-- ================= WELCOME ================= -->
-
-            <div class="dashboard-header">
-
-                <div>
-
-                    <span class="section-label">
-                        MY WORKSPACE
-                    </span>
-
-
-                    <h1>
-
-                        Welcome back,
-
-                        <span id="dashboardUserName">
-                            Hardik!
-                        </span>
-
-                        👋
-
-                    </h1>
-
-
-                    <p>
-                        Manage your blogs and track your
-                        content performance.
-                    </p>
-
-                </div>
-
-
-                <a
-                    href="create-blog.html"
-                    class="primary-btn"
-                >
-                    + Create New Blog
-                </a>
-
-            </div>
-
-
-
-            <!-- ================= STATS ================= -->
-
-            <div class="dashboard-stats">
-
-
-                <!-- TOTAL BLOGS -->
-
-                <div class="dashboard-stat-card">
-
-                    <div class="stat-icon">
-                        📝
-                    </div>
-
-
-                    <div>
-
-                        <span>
-                            Total Blogs
-                        </span>
-
-                        <h2 id="totalBlogs">
-                            0
-                        </h2>
-
-                    </div>
-
-
-                    <small class="stat-growth">
-                        Your published blogs
-                    </small>
-
-                </div>
-
-
-
-                <!-- TOTAL VIEWS -->
-
-                <div class="dashboard-stat-card">
-
-                    <div class="stat-icon">
-                        👁️
-                    </div>
-
-
-                    <div>
-
-                        <span>
-                            Total Views
-                        </span>
-
-                        <h2>
-                            0
-                        </h2>
-
-                    </div>
-
-
-                    <small class="stat-growth">
-                        Coming soon
-                    </small>
-
-                </div>
-
-
-
-                <!-- TOTAL LIKES -->
-
-                <div class="dashboard-stat-card">
-
-                    <div class="stat-icon">
-                        ❤️
-                    </div>
-
-
-                    <div>
-
-                        <span>
-                            Total Likes
-                        </span>
-
-                        <h2>
-                            0
-                        </h2>
-
-                    </div>
-
-
-                    <small class="stat-growth">
-                        Coming soon
-                    </small>
-
-                </div>
-
-
-
-                <!-- FOLLOWERS -->
-
-                <div class="dashboard-stat-card">
-
-                    <div class="stat-icon">
-                        👥
-                    </div>
-
-
-                    <div>
-
-                        <span>
-                            Followers
-                        </span>
-
-                        <h2>
-                            0
-                        </h2>
-
-                    </div>
-
-
-                    <small class="stat-growth">
-                        Coming soon
-                    </small>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- ================= CONTENT ================= -->
-
-            <div class="dashboard-content">
-
-
-                <!-- ================= RECENT BLOGS ================= -->
-
-                <section class="dashboard-panel">
-
-
-                    <div class="panel-header">
-
-                        <div>
-
-                            <span class="section-label">
-                                CONTENT
-                            </span>
-
-                            <h2>
-                                Recent Blogs
-                            </h2>
-
-                        </div>
-
-
-                        <a href="index.html#blogs">
-                            View All →
-                        </a>
-
-                    </div>
-
-
-
-                    <!-- BLOGS ARE LOADED BY JAVASCRIPT -->
-
-                    <div class="dashboard-blog-list">
-
-                        <div class="empty-state">
-
-                            <p>
-                                Loading blogs...
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                </section>
-
-
-
-                <!-- ================= PROFILE ================= -->
-
-                <aside class="dashboard-panel profile-panel">
-
-
-                    <div class="panel-header">
-
-                        <div>
-
-                            <span class="section-label">
-                                PROFILE
-                            </span>
-
-                            <h2>
-                                My Profile
-                            </h2>
-
-                        </div>
-
-
-                        <button
-                            class="edit-profile"
-                            type="button"
-                            id="editProfileBtn"
-                        >
-                            Edit
-                        </button>
-
-                    </div>
-
-
-
-                    <!-- PROFILE USER -->
-
-                    <div class="profile-user">
-
-                        <div class="profile-avatar">
-                            H
-                        </div>
-
-
-                        <h3>
-                            Hardik Lonkar
-                        </h3>
-
-
-                        <p>
-                            Full Stack Developer
-                        </p>
-
-                    </div>
-
-
-
-                    <!-- PROFILE DETAILS -->
-
-                    <div class="profile-details">
-
-
-                        <!-- EMAIL -->
-
-                        <div>
-
-                            <span>
-                                📧
-                            </span>
-
-                            <p>
-
-                                Email
-
-                                <strong>
-                                    hardik@example.com
-                                </strong>
-
-                            </p>
-
-                        </div>
-
-
-
-                        <!-- EDUCATION -->
-
-                        <div>
-
-                            <span>
-                                🎓
-                            </span>
-
-                            <p>
-
-                                Education
-
-                                <strong>
-                                    MCA
-                                </strong>
-
-                            </p>
-
-                        </div>
-
-
-
-                        <!-- JOINED -->
-
-                        <div>
-
-                            <span>
-                                📅
-                            </span>
-
-                            <p>
-
-                                Joined
-
-                                <strong>
-                                    August 2026
-                                </strong>
-
-                            </p>
-
-                        </div>
-
-
-                    </div>
-
-
-
-                    <!-- WRITE BLOG -->
-
-                    <a
-                        href="create-blog.html"
-                        class="secondary-btn profile-btn"
-                    >
-                        Write a Blog
-                    </a>
-
-
-                </aside>
-
-
-            </div>
-
-
-        </div>
-
-    </main>
-
-
-
-    <!-- ================= FOOTER ================= -->
-
-    <footer class="footer">
-
-        <div class="footer-bottom">
-
-            <p>
-                © 2026 BlogSphere.
-                All rights reserved.
-            </p>
-
-
-            <p>
-                Built with ❤️ using
-                HTML, CSS & JavaScript
-            </p>
-
-        </div>
-
-    </footer>
-
-
-
-    <!-- ================= SCRIPT ================= -->
-
-    <script src="js/script.js"></script>
-
-
-</body>
-
+                    Logout
+                </button>
+ 
+            </nav> 
+ 
+ 
+            <button 
+                class="menu-btn" 
+                id="menuBtn" 
+                type="button" 
+            > 
+                ☰ 
+            </button> 
+ 
+        </div> 
+ 
+    </header> 
+ 
+ 
+ 
+    <!-- ================= DASHBOARD ================= --> 
+ 
+    <main class="dashboard-section"> 
+ 
+        <div class="container"> 
+ 
+ 
+            <!-- ================= WELCOME ================= --> 
+ 
+            <div class="dashboard-header"> 
+ 
+                <div> 
+ 
+                    <span class="section-label"> 
+                        MY WORKSPACE 
+                    </span> 
+ 
+ 
+                    <h1> 
+ 
+                        Welcome back, 
+ 
+                        <span id="dashboardUserName"> 
+                            Hardik! 
+                        </span> 
+ 
+                        👋 
+ 
+                    </h1> 
+ 
+ 
+                    <p> 
+                        Manage your blogs and track your 
+                        content performance. 
+                    </p> 
+ 
+                </div> 
+ 
+ 
+                <a 
+                    href="create-blog.html" 
+                    class="primary-btn" 
+                > 
+                    + Create New Blog 
+                </a> 
+ 
+            </div> 
+ 
+ 
+ 
+            <!-- ================= STATS ================= --> 
+ 
+            <div class="dashboard-stats"> 
+ 
+ 
+                <!-- TOTAL BLOGS --> 
+ 
+                <div class="dashboard-stat-card"> 
+ 
+                    <div class="stat-icon"> 
+                        📝 
+                    </div> 
+ 
+ 
+                    <div> 
+ 
+                        <span> 
+                            Total Blogs 
+                        </span> 
+ 
+                        <h2 id="totalBlogs"> 
+                            0 
+                        </h2> 
+ 
+                    </div> 
+ 
+ 
+                    <small class="stat-growth"> 
+                        Your published blogs 
+                    </small> 
+ 
+                </div> 
+ 
+ 
+ 
+                <!-- TOTAL VIEWS --> 
+ 
+                <div class="dashboard-stat-card"> 
+ 
+                    <div class="stat-icon"> 
+                        👁️ 
+                    </div> 
+ 
+ 
+                    <div> 
+ 
+                        <span> 
+                            Total Views 
+                        </span> 
+ 
+                        <h2> 
+                            0 
+                        </h2> 
+ 
+                    </div> 
+ 
+ 
+                    <small class="stat-growth"> 
+                        Coming soon 
+                    </small> 
+ 
+                </div> 
+ 
+ 
+ 
+                <!-- TOTAL LIKES --> 
+ 
+                <div class="dashboard-stat-card"> 
+ 
+                    <div class="stat-icon"> 
+                        ❤️ 
+                    </div> 
+ 
+ 
+                    <div> 
+ 
+                        <span> 
+                            Total Likes 
+                        </span> 
+ 
+                        <h2> 
+                            0 
+                        </h2> 
+ 
+                    </div> 
+ 
+ 
+                    <small class="stat-growth"> 
+                        Coming soon 
+                    </small> 
+ 
+                </div> 
+ 
+ 
+ 
+                <!-- FOLLOWERS --> 
+ 
+                <div class="dashboard-stat-card"> 
+ 
+                    <div class="stat-icon"> 
+                        👥 
+                    </div> 
+ 
+ 
+                    <div> 
+ 
+                        <span> 
+                            Followers 
+                        </span> 
+ 
+                        <h2> 
+                            0 
+                        </h2> 
+ 
+                    </div> 
+ 
+ 
+                    <small class="stat-growth"> 
+                        Coming soon 
+                    </small> 
+ 
+                </div> 
+ 
+            </div> 
+ 
+ 
+ 
+            <!-- ================= CONTENT ================= --> 
+ 
+            <div class="dashboard-content"> 
+ 
+ 
+                <!-- ================= RECENT BLOGS ================= --> 
+ 
+                <section class="dashboard-panel"> 
+ 
+ 
+                    <div class="panel-header"> 
+ 
+                        <div> 
+ 
+                            <span class="section-label"> 
+                                CONTENT 
+                            </span> 
+ 
+                            <h2> 
+                                Recent Blogs 
+                            </h2> 
+ 
+                        </div> 
+ 
+ 
+                        <a href="index.html#blogs"> 
+                            View All → 
+                        </a> 
+ 
+                    </div> 
+ 
+ 
+ 
+                    <!-- BLOGS ARE LOADED BY JAVASCRIPT --> 
+ 
+                    <div class="dashboard-blog-list"> 
+ 
+                        <div class="empty-state"> 
+ 
+                            <p> 
+                                Loading blogs... 
+                            </p> 
+ 
+                        </div> 
+ 
+                    </div> 
+ 
+ 
+                </section> 
+ 
+ 
+ 
+                <!-- ================= PROFILE ================= --> 
+ 
+                <aside class="dashboard-panel profile-panel"> 
+ 
+ 
+                    <div class="panel-header"> 
+ 
+                        <div> 
+ 
+                            <span class="section-label"> 
+                                PROFILE 
+                            </span> 
+ 
+                            <h2> 
+                                My Profile 
+                            </h2> 
+ 
+                        </div> 
+ 
+ 
+                        <button 
+                            class="edit-profile" 
+                            type="button" 
+                            id="editProfileBtn" 
+                        > 
+                            Edit 
+                        </button> 
+ 
+                    </div> 
+ 
+ 
+ 
+                    <!-- PROFILE USER --> 
+ 
+                    <div class="profile-user"> 
+ 
+                        <div class="profile-avatar"> 
+                            H 
+                        </div> 
+ 
+ 
+                        <h3> 
+                            Hardik Lonkar 
+                        </h3> 
+ 
+ 
+                        <p> 
+                            Full Stack Developer 
+                        </p> 
+ 
+                    </div> 
+ 
+ 
+ 
+                    <!-- PROFILE DETAILS --> 
+ 
+                    <div class="profile-details"> 
+ 
+ 
+                        <!-- EMAIL --> 
+ 
+                        <div> 
+ 
+                            <span> 
+                                📧 
+                            </span> 
+ 
+                            <p> 
+ 
+                                Email 
+ 
+                                <strong> 
+                                    hardik@example.com 
+                                </strong> 
+ 
+                            </p> 
+ 
+                        </div> 
+ 
+ 
+ 
+                        <!-- EDUCATION --> 
+ 
+                        <div> 
+ 
+                            <span> 
+                                🎓 
+                            </span> 
+ 
+                            <p> 
+ 
+                                Education 
+ 
+                                <strong> 
+                                    MCA 
+                                </strong> 
+ 
+                            </p> 
+ 
+                        </div> 
+ 
+ 
+ 
+                        <!-- JOINED --> 
+ 
+                        <div> 
+ 
+                            <span> 
+                                📅 
+                            </span> 
+ 
+                            <p> 
+ 
+                                Joined 
+ 
+                                <strong> 
+                                    August 2026 
+                                </strong> 
+ 
+                            </p> 
+ 
+                        </div> 
+ 
+ 
+                    </div> 
+ 
+ 
+ 
+                    <!-- WRITE BLOG --> 
+ 
+                    <a 
+                        href="create-blog.html" 
+                        class="secondary-btn profile-btn" 
+                    > 
+                        Write a Blog 
+                    </a> 
+ 
+ 
+                </aside> 
+ 
+ 
+            </div> 
+ 
+ 
+        </div> 
+ 
+    </main> 
+ 
+ 
+ 
+    <!-- ================= FOOTER ================= --> 
+ 
+    <footer class="footer"> 
+ 
+        <div class="footer-bottom"> 
+ 
+            <p> 
+                © 2026 BlogSphere. 
+                All rights reserved. 
+            </p> 
+ 
+ 
+            <p> 
+                Built with ❤️ using 
+                HTML, CSS & JavaScript 
+            </p> 
+ 
+        </div> 
+ 
+    </footer> 
+ 
+ 
+ 
+    <!-- ================= SCRIPT ================= --> 
+ 
+    <script src="js/script.js"></script> 
+ 
+ 
+</body> 
+ 
 </html>
+
