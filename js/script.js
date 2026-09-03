@@ -1,13 +1,17 @@
 /* =========================================================
    BLOGSPHERE - FINAL SCRIPT.JS
-   JWT AUTHENTICATION + PROTECTED DASHBOARD
+   VERCEL API + JWT AUTHENTICATION
+========================================================= */
+
+/* =========================================================
+   API CONFIGURATION
 ========================================================= */
 
 const API_URL =
     window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1"
         ? "http://localhost:5000"
-        : "https://blogsphere-api-2026.onrender.com";
+        : "https://YOUR-VERCEL-BACKEND.vercel.app";
 
 
 /* =========================================================
@@ -20,30 +24,19 @@ function getToken() {
 
 
 function getLoggedInUser() {
-
     try {
+        const user = localStorage.getItem("loggedInUser");
 
-        const user =
-            localStorage.getItem("loggedInUser");
-
-        return user
-            ? JSON.parse(user)
-            : null;
+        return user ? JSON.parse(user) : null;
 
     } catch (error) {
-
-        console.error(
-            "GET LOGGED USER ERROR:",
-            error
-        );
-
+        console.error("GET LOGGED USER ERROR:", error);
         return null;
     }
 }
 
 
 function getAuthHeaders() {
-
     const token = getToken();
 
     return {
@@ -51,8 +44,7 @@ function getAuthHeaders() {
 
         ...(token
             ? {
-                "Authorization":
-                    `Bearer ${token}`
+                "Authorization": `Bearer ${token}`
             }
             : {})
     };
@@ -60,21 +52,14 @@ function getAuthHeaders() {
 
 
 function clearLoginData() {
-
     localStorage.removeItem("token");
-
-    localStorage.removeItem(
-        "loggedInUser"
-    );
+    localStorage.removeItem("loggedInUser");
 }
 
 
 function redirectToLogin() {
-
     clearLoginData();
-
-    window.location.href =
-        "login.html";
+    window.location.href = "login.html";
 }
 
 
@@ -84,29 +69,24 @@ function redirectToLogin() {
 
 function protectDashboard() {
 
-    const isDashboard =
+    const currentPage =
         window.location.pathname
-            .toLowerCase()
-            .endsWith("dashboard.html");
+            .split("/")
+            .pop()
+            .toLowerCase();
 
-    if (!isDashboard) {
+    if (currentPage !== "dashboard.html") {
         return;
     }
 
-    const token =
-        getToken();
-
-    const user =
-        getLoggedInUser();
+    const token = getToken();
+    const user = getLoggedInUser();
 
     if (!token || !user) {
 
-        alert(
-            "Please login to access your dashboard."
-        );
+        alert("Please login to access your dashboard.");
 
-        window.location.href =
-            "login.html";
+        window.location.href = "login.html";
     }
 }
 
@@ -141,17 +121,13 @@ function setupLogout() {
 
                 clearLoginData();
 
-                alert(
-                    "Logged out successfully! 👋"
-                );
+                alert("Logged out successfully! 👋");
 
-                window.location.href =
-                    "login.html";
+                window.location.href = "login.html";
             }
         );
 
     });
-
 }
 
 
@@ -159,82 +135,66 @@ function setupLogout() {
    MOBILE MENU
 ========================================================= */
 
-const menuBtn =
-    document.getElementById("menuBtn");
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-const navLinks =
-    document.querySelector(".nav-links");
+        const menuBtn =
+            document.getElementById("menuBtn");
 
+        const navLinks =
+            document.querySelector(".nav-links");
 
-if (menuBtn && navLinks) {
+        if (menuBtn && navLinks) {
 
-    menuBtn.addEventListener(
-        "click",
-        function (event) {
+            menuBtn.addEventListener(
+                "click",
+                function (event) {
 
-            event.stopPropagation();
+                    event.stopPropagation();
 
-            navLinks.classList.toggle(
-                "show"
+                    navLinks.classList.toggle("show");
+                }
             );
-
         }
-    );
 
-}
+    }
+);
 
 
 /* =========================================================
    PASSWORD TOGGLE
 ========================================================= */
 
-function setupPasswordToggle(
-    buttonId,
-    inputId
-) {
+function setupPasswordToggle(buttonId, inputId) {
 
     const button =
-        document.getElementById(
-            buttonId
-        );
+        document.getElementById(buttonId);
 
     const input =
-        document.getElementById(
-            inputId
-        );
-
+        document.getElementById(inputId);
 
     if (!button || !input) {
         return;
     }
 
-
     button.addEventListener(
         "click",
         function () {
 
-            if (
-                input.type ===
-                "password"
-            ) {
+            if (input.type === "password") {
 
                 input.type = "text";
-
-                button.textContent =
-                    "🙈";
+                button.textContent = "🙈";
 
             } else {
 
-                input.type =
-                    "password";
-
-                button.textContent =
-                    "👁";
+                input.type = "password";
+                button.textContent = "👁";
             }
 
         }
     );
-
 }
 
 
@@ -259,10 +219,7 @@ setupPasswordToggle(
 ========================================================= */
 
 const loginForm =
-    document.getElementById(
-        "loginForm"
-    );
-
+    document.getElementById("loginForm");
 
 if (loginForm) {
 
@@ -272,25 +229,15 @@ if (loginForm) {
 
             event.preventDefault();
 
-
             const emailInput =
-                document.getElementById(
-                    "loginEmail"
-                );
+                document.getElementById("loginEmail");
 
             const passwordInput =
-                document.getElementById(
-                    "loginPassword"
-                );
+                document.getElementById("loginPassword");
 
-
-            if (
-                !emailInput ||
-                !passwordInput
-            ) {
+            if (!emailInput || !passwordInput) {
                 return;
             }
-
 
             const email =
                 emailInput.value
@@ -300,7 +247,6 @@ if (loginForm) {
             const password =
                 passwordInput.value;
 
-
             if (!email || !password) {
 
                 alert(
@@ -309,7 +255,6 @@ if (loginForm) {
 
                 return;
             }
-
 
             try {
 
@@ -332,10 +277,8 @@ if (loginForm) {
                         }
                     );
 
-
                 const data =
                     await response.json();
-
 
                 if (
                     response.ok &&
@@ -343,42 +286,22 @@ if (loginForm) {
                     data.token
                 ) {
 
-                    /* SAVE JWT */
-
                     localStorage.setItem(
                         "token",
                         data.token
                     );
 
-
-                    /* SAVE USER */
-
                     localStorage.setItem(
                         "loggedInUser",
-                        JSON.stringify(
-                            data.user
-                        )
+                        JSON.stringify(data.user)
                     );
-
-
-                    console.log(
-                        "LOGIN SUCCESS"
-                    );
-
-                    console.log(
-                        "JWT TOKEN SAVED:",
-                        !!getToken()
-                    );
-
 
                     alert(
                         "Login successful! 🎉"
                     );
 
-
                     window.location.href =
                         "dashboard.html";
-
 
                 } else {
 
@@ -386,9 +309,7 @@ if (loginForm) {
                         data.message ||
                         "Login failed."
                     );
-
                 }
-
 
             } catch (error) {
 
@@ -397,11 +318,9 @@ if (loginForm) {
                     error
                 );
 
-
                 alert(
-                    "Unable to connect to backend server. Please make sure your Node.js server is running."
+                    "Unable to connect to the backend API."
                 );
-
             }
 
         }
@@ -415,10 +334,7 @@ if (loginForm) {
 ========================================================= */
 
 const registerForm =
-    document.getElementById(
-        "registerForm"
-    );
-
+    document.getElementById("registerForm");
 
 if (registerForm) {
 
@@ -428,32 +344,20 @@ if (registerForm) {
 
             event.preventDefault();
 
-
             const nameInput =
-                document.getElementById(
-                    "registerName"
-                );
+                document.getElementById("registerName");
 
             const emailInput =
-                document.getElementById(
-                    "registerEmail"
-                );
+                document.getElementById("registerEmail");
 
             const passwordInput =
-                document.getElementById(
-                    "registerPassword"
-                );
+                document.getElementById("registerPassword");
 
             const confirmInput =
-                document.getElementById(
-                    "confirmPassword"
-                );
+                document.getElementById("confirmPassword");
 
             const termsInput =
-                document.getElementById(
-                    "terms"
-                );
-
+                document.getElementById("terms");
 
             if (
                 !nameInput ||
@@ -463,7 +367,6 @@ if (registerForm) {
             ) {
                 return;
             }
-
 
             const name =
                 nameInput.value.trim();
@@ -484,7 +387,6 @@ if (registerForm) {
                     ? termsInput.checked
                     : true;
 
-
             if (
                 !name ||
                 !email ||
@@ -499,7 +401,6 @@ if (registerForm) {
                 return;
             }
 
-
             if (password.length < 6) {
 
                 alert(
@@ -509,11 +410,7 @@ if (registerForm) {
                 return;
             }
 
-
-            if (
-                password !==
-                confirmPassword
-            ) {
+            if (password !== confirmPassword) {
 
                 alert(
                     "Passwords do not match."
@@ -521,7 +418,6 @@ if (registerForm) {
 
                 return;
             }
-
 
             if (!terms) {
 
@@ -531,7 +427,6 @@ if (registerForm) {
 
                 return;
             }
-
 
             try {
 
@@ -555,10 +450,8 @@ if (registerForm) {
                         }
                     );
 
-
                 const data =
                     await response.json();
-
 
                 if (
                     response.ok &&
@@ -572,16 +465,13 @@ if (registerForm) {
                     window.location.href =
                         "login.html";
 
-
                 } else {
 
                     alert(
                         data.message ||
                         "Registration failed."
                     );
-
                 }
-
 
             } catch (error) {
 
@@ -590,11 +480,9 @@ if (registerForm) {
                     error
                 );
 
-
                 alert(
-                    "Unable to connect to backend server. Please make sure your Node.js server is running."
+                    "Unable to connect to the backend API."
                 );
-
             }
 
         }
@@ -608,54 +496,35 @@ if (registerForm) {
 ========================================================= */
 
 const blogTitle =
-    document.getElementById(
-        "blogTitle"
-    );
+    document.getElementById("blogTitle");
 
 const blogCategory =
-    document.getElementById(
-        "blogCategory"
-    );
+    document.getElementById("blogCategory");
 
 const blogContent =
-    document.getElementById(
-        "blogContent"
-    );
+    document.getElementById("blogContent");
 
 const blogImage =
-    document.getElementById(
-        "blogImage"
-    );
+    document.getElementById("blogImage");
 
 const previewTitle =
-    document.getElementById(
-        "previewTitle"
-    );
+    document.getElementById("previewTitle");
 
 const previewCategory =
-    document.getElementById(
-        "previewCategory"
-    );
+    document.getElementById("previewCategory");
 
 const previewContent =
-    document.getElementById(
-        "previewContent"
-    );
+    document.getElementById("previewContent");
 
 const previewImage =
-    document.getElementById(
-        "previewImage"
-    );
+    document.getElementById("previewImage");
 
 
 /* =========================================================
    LIVE TITLE PREVIEW
 ========================================================= */
 
-if (
-    blogTitle &&
-    previewTitle
-) {
+if (blogTitle && previewTitle) {
 
     blogTitle.addEventListener(
         "input",
@@ -664,10 +533,8 @@ if (
             previewTitle.textContent =
                 blogTitle.value.trim() ||
                 "Your blog title will appear here";
-
         }
     );
-
 }
 
 
@@ -675,10 +542,7 @@ if (
    LIVE CATEGORY PREVIEW
 ========================================================= */
 
-if (
-    blogCategory &&
-    previewCategory
-) {
+if (blogCategory && previewCategory) {
 
     blogCategory.addEventListener(
         "change",
@@ -687,10 +551,8 @@ if (
             previewCategory.textContent =
                 blogCategory.value ||
                 "Category";
-
         }
     );
-
 }
 
 
@@ -698,10 +560,7 @@ if (
    LIVE CONTENT PREVIEW
 ========================================================= */
 
-if (
-    blogContent &&
-    previewContent
-) {
+if (blogContent && previewContent) {
 
     blogContent.addEventListener(
         "input",
@@ -710,10 +569,8 @@ if (
             previewContent.textContent =
                 blogContent.value.trim() ||
                 "Start writing your blog content and see the preview here.";
-
         }
     );
-
 }
 
 
@@ -721,10 +578,7 @@ if (
    COVER IMAGE PREVIEW
 ========================================================= */
 
-if (
-    blogImage &&
-    previewImage
-) {
+if (blogImage && previewImage) {
 
     blogImage.addEventListener(
         "input",
@@ -732,7 +586,6 @@ if (
 
             const imageUrl =
                 blogImage.value.trim();
-
 
             if (imageUrl) {
 
@@ -745,21 +598,17 @@ if (
                 previewImage.style.backgroundPosition =
                     "center";
 
-                previewImage.textContent =
-                    "";
+                previewImage.textContent = "";
 
             } else {
 
                 previewImage.style.backgroundImage =
                     "none";
 
-                previewImage.textContent =
-                    "📝";
+                previewImage.textContent = "📝";
             }
-
         }
     );
-
 }
 
 
@@ -768,10 +617,7 @@ if (
 ========================================================= */
 
 const saveDraftBtn =
-    document.getElementById(
-        "saveDraftBtn"
-    );
-
+    document.getElementById("saveDraftBtn");
 
 if (saveDraftBtn) {
 
@@ -780,15 +626,10 @@ if (saveDraftBtn) {
         function () {
 
             const title =
-                document.getElementById(
-                    "blogTitle"
-                )?.value || "";
+                document.getElementById("blogTitle")?.value || "";
 
             const content =
-                document.getElementById(
-                    "blogContent"
-                )?.value || "";
-
+                document.getElementById("blogContent")?.value || "";
 
             if (
                 !title.trim() &&
@@ -801,7 +642,6 @@ if (saveDraftBtn) {
 
                 return;
             }
-
 
             const draft = {
 
@@ -837,15 +677,12 @@ if (saveDraftBtn) {
 
                 savedAt:
                     new Date().toISOString()
-
             };
-
 
             localStorage.setItem(
                 "blogDraft",
                 JSON.stringify(draft)
             );
-
 
             alert(
                 "Blog draft saved successfully! 💾"
@@ -859,14 +696,10 @@ if (saveDraftBtn) {
 
 /* =========================================================
    PUBLISH BLOG
-   JWT PROTECTED
 ========================================================= */
 
 const blogForm =
-    document.getElementById(
-        "blogForm"
-    );
-
+    document.getElementById("blogForm");
 
 if (blogForm) {
 
@@ -876,12 +709,8 @@ if (blogForm) {
 
             event.preventDefault();
 
-
-            /* CHECK LOGIN */
-
             const token =
                 getToken();
-
 
             if (!token) {
 
@@ -894,7 +723,6 @@ if (blogForm) {
 
                 return;
             }
-
 
             const title =
                 document.getElementById(
@@ -926,21 +754,13 @@ if (blogForm) {
                     "readTime"
                 )?.value.trim() || "";
 
-
             const tags =
                 tagsValue
                     ? tagsValue
                         .split(",")
-                        .map(
-                            tag =>
-                                tag.trim()
-                        )
-                        .filter(
-                            tag =>
-                                tag.length > 0
-                        )
+                        .map(tag => tag.trim())
+                        .filter(tag => tag.length > 0)
                     : [];
-
 
             if (
                 !title ||
@@ -954,7 +774,6 @@ if (blogForm) {
 
                 return;
             }
-
 
             try {
 
@@ -979,15 +798,10 @@ if (blogForm) {
                         }
                     );
 
-
                 const data =
                     await response.json();
 
-
-                if (
-                    response.status ===
-                    401
-                ) {
+                if (response.status === 401) {
 
                     alert(
                         "Session expired. Please login again."
@@ -998,7 +812,6 @@ if (blogForm) {
                     return;
                 }
 
-
                 if (
                     response.ok &&
                     data.success
@@ -1008,15 +821,12 @@ if (blogForm) {
                         "blogDraft"
                     );
 
-
                     alert(
                         "Blog created successfully! 🚀"
                     );
 
-
                     window.location.href =
                         "dashboard.html";
-
 
                 } else {
 
@@ -1024,9 +834,7 @@ if (blogForm) {
                         data.message ||
                         "Blog creation failed."
                     );
-
                 }
-
 
             } catch (error) {
 
@@ -1035,11 +843,9 @@ if (blogForm) {
                     error
                 );
 
-
                 alert(
-                    "Unable to connect to backend server. Please make sure your Node.js server is running."
+                    "Unable to connect to the backend API."
                 );
-
             }
 
         }
@@ -1049,21 +855,17 @@ if (blogForm) {
 
 
 /* =========================================================
-   LOAD ALL BLOGS - HOME PAGE
+   LOAD ALL BLOGS
 ========================================================= */
 
 async function loadBlogs() {
 
     const blogGrid =
-        document.querySelector(
-            ".blog-grid"
-        );
-
+        document.querySelector(".blog-grid");
 
     if (!blogGrid) {
         return;
     }
-
 
     try {
 
@@ -1072,10 +874,8 @@ async function loadBlogs() {
                 `${API_URL}/api/blogs`
             );
 
-
         const data =
             await response.json();
-
 
         if (
             !response.ok ||
@@ -1085,17 +885,15 @@ async function loadBlogs() {
             blogGrid.innerHTML = `
                 <div class="empty-state">
                     <h3>Unable to load blogs</h3>
-                    <p>Please check the backend server.</p>
+                    <p>Please try again later.</p>
                 </div>
             `;
 
             return;
         }
 
-
         const blogs =
             data.blogs || [];
-
 
         if (blogs.length === 0) {
 
@@ -1109,7 +907,6 @@ async function loadBlogs() {
             return;
         }
 
-
         blogGrid.innerHTML =
             blogs
                 .map(function (blog) {
@@ -1118,12 +915,10 @@ async function loadBlogs() {
                         blog.author ||
                         "Unknown Author";
 
-
                     const firstLetter =
                         authorName
                             .charAt(0)
                             .toUpperCase();
-
 
                     const date =
                         blog.created_at
@@ -1138,7 +933,6 @@ async function loadBlogs() {
                                 }
                             )
                             : "";
-
 
                     const imageHTML =
                         blog.cover_image
@@ -1160,7 +954,6 @@ async function loadBlogs() {
                                     📝
                                 </div>
                             `;
-
 
                     return `
                         <article
@@ -1221,7 +1014,6 @@ async function loadBlogs() {
                 })
                 .join("");
 
-
     } catch (error) {
 
         console.error(
@@ -1229,22 +1021,18 @@ async function loadBlogs() {
             error
         );
 
-
         blogGrid.innerHTML = `
             <div class="empty-state">
-                <h3>Backend server not connected</h3>
-                <p>Please start your Node.js server.</p>
+                <h3>Unable to connect to API</h3>
+                <p>Please try again later.</p>
             </div>
         `;
-
     }
-
 }
 
 
 /* =========================================================
    LOAD MY BLOGS - DASHBOARD
-   JWT PROTECTED
 ========================================================= */
 
 async function loadDashboardBlogs() {
@@ -1254,15 +1042,12 @@ async function loadDashboardBlogs() {
             ".dashboard-blog-list"
         );
 
-
     if (!dashboardList) {
         return;
     }
 
-
     const token =
         getToken();
-
 
     if (!token) {
 
@@ -1270,7 +1055,6 @@ async function loadDashboardBlogs() {
 
         return;
     }
-
 
     try {
 
@@ -1287,15 +1071,10 @@ async function loadDashboardBlogs() {
                 }
             );
 
-
         const data =
             await response.json();
 
-
-        if (
-            response.status ===
-            401
-        ) {
+        if (response.status === 401) {
 
             alert(
                 "Session expired. Please login again."
@@ -1306,7 +1085,6 @@ async function loadDashboardBlogs() {
             return;
         }
 
-
         if (
             !response.ok ||
             !data.success
@@ -1314,67 +1092,44 @@ async function loadDashboardBlogs() {
 
             dashboardList.innerHTML = `
                 <div class="empty-state">
-
-                    <h3>
-                        Unable to load blogs
-                    </h3>
-
+                    <h3>Unable to load blogs</h3>
                     <p>
-                        ${
-                            data.message ||
-                            "Please try again."
-                        }
+                        ${data.message || "Please try again."}
                     </p>
-
                 </div>
             `;
 
             return;
         }
 
-
         const blogs =
             data.blogs || [];
-
 
         const totalBlogs =
             document.getElementById(
                 "totalBlogs"
             );
 
-
         if (totalBlogs) {
 
             totalBlogs.textContent =
-                data.count ??
-                blogs.length;
-
+                data.count ?? blogs.length;
         }
-
 
         if (blogs.length === 0) {
 
             dashboardList.innerHTML = `
                 <div class="empty-state">
-
-                    <h3>
-                        No blogs yet
-                    </h3>
-
-                    <p>
-                        Create your first blog.
-                    </p>
-
+                    <h3>No blogs yet</h3>
+                    <p>Create your first blog.</p>
                 </div>
             `;
 
             return;
         }
 
-
         const latestBlogs =
             blogs.slice(0, 5);
-
 
         dashboardList.innerHTML =
             latestBlogs
@@ -1394,7 +1149,6 @@ async function loadDashboardBlogs() {
                             )
                             : "";
 
-
                     return `
                         <article
                             class="dashboard-blog"
@@ -1408,7 +1162,6 @@ async function loadDashboardBlogs() {
                             >
                                 📝
                             </div>
-
 
                             <div
                                 class="dashboard-blog-info"
@@ -1430,13 +1183,9 @@ async function loadDashboardBlogs() {
 
                             </div>
 
-
-                            <div
-                                class="blog-status published"
-                            >
+                            <div class="blog-status published">
                                 Published
                             </div>
-
 
                             <div class="blog-actions">
 
@@ -1454,7 +1203,6 @@ async function loadDashboardBlogs() {
                                     ⋮
                                 </button>
 
-
                                 <div
                                     class="blog-menu"
                                     id="blogMenu-${blog.id}"
@@ -1471,7 +1219,6 @@ async function loadDashboardBlogs() {
                                     >
                                         ✏️ Edit
                                     </button>
-
 
                                     <button
                                         type="button"
@@ -1495,7 +1242,6 @@ async function loadDashboardBlogs() {
                 })
                 .join("");
 
-
     } catch (error) {
 
         console.error(
@@ -1503,28 +1249,18 @@ async function loadDashboardBlogs() {
             error
         );
 
-
         dashboardList.innerHTML = `
             <div class="empty-state">
-
-                <h3>
-                    Backend server not connected
-                </h3>
-
-                <p>
-                    Please start your Node.js server.
-                </p>
-
+                <h3>Unable to connect to API</h3>
+                <p>Please try again later.</p>
             </div>
         `;
-
     }
-
 }
 
 
 /* =========================================================
-   VIEW SINGLE BLOG
+   VIEW BLOG
 ========================================================= */
 
 function viewBlog(id) {
@@ -1533,10 +1269,8 @@ function viewBlog(id) {
         return;
     }
 
-
     window.location.href =
         `blog-details.html?id=${encodeURIComponent(id)}`;
-
 }
 
 
@@ -1550,15 +1284,12 @@ function editBlog(event, id) {
         event.stopPropagation();
     }
 
-
     if (!id) {
         return;
     }
 
-
     window.location.href =
         `edit.html?id=${encodeURIComponent(id)}`;
-
 }
 
 
@@ -1566,15 +1297,11 @@ function editBlog(event, id) {
    TOGGLE BLOG MENU
 ========================================================= */
 
-function toggleBlogMenu(
-    event,
-    id
-) {
+function toggleBlogMenu(event, id) {
 
     if (event) {
         event.stopPropagation();
     }
-
 
     document
         .querySelectorAll(".blog-menu")
@@ -1585,94 +1312,67 @@ function toggleBlogMenu(
                 `blogMenu-${id}`
             ) {
 
-                menu.classList.remove(
-                    "show"
-                );
-
+                menu.classList.remove("show");
             }
 
         });
-
 
     const menu =
         document.getElementById(
             `blogMenu-${id}`
         );
-
 
     if (!menu) {
         return;
     }
 
-
-    menu.classList.toggle(
-        "show"
-    );
-
+    menu.classList.toggle("show");
 }
 
 
 /* =========================================================
    DELETE BLOG
-   JWT PROTECTED
 ========================================================= */
 
-async function deleteBlog(
-    event,
-    id
-) {
+async function deleteBlog(event, id) {
 
     if (event) {
         event.stopPropagation();
     }
 
-
     if (!id) {
         return;
     }
-
 
     const menu =
         document.getElementById(
             `blogMenu-${id}`
         );
 
-
     if (menu) {
-
-        menu.classList.remove(
-            "show"
-        );
-
+        menu.classList.remove("show");
     }
-
 
     const token =
         getToken();
 
-
     if (!token) {
 
-        alert(
-            "Please login first."
-        );
+        alert("Please login first.");
 
         redirectToLogin();
 
         return;
     }
 
-
     const confirmDelete =
         confirm(
             "Are you sure you want to delete this blog? This action cannot be undone."
         );
 
-
     if (!confirmDelete) {
         return;
     }
-
 
     try {
 
@@ -1689,15 +1389,10 @@ async function deleteBlog(
                 }
             );
 
-
         const data =
             await response.json();
 
-
-        if (
-            response.status ===
-            401
-        ) {
+        if (response.status === 401) {
 
             alert(
                 "Session expired. Please login again."
@@ -1708,7 +1403,6 @@ async function deleteBlog(
             return;
         }
 
-
         if (
             !response.ok ||
             !data.success
@@ -1718,19 +1412,14 @@ async function deleteBlog(
                 data.message ||
                 "Blog deletion failed."
             );
-
         }
-
 
         alert(
             "Blog deleted successfully! 🗑️"
         );
 
-
         await loadDashboardBlogs();
-
         await loadBlogs();
-
 
     } catch (error) {
 
@@ -1739,14 +1428,11 @@ async function deleteBlog(
             error
         );
 
-
         alert(
             error.message ||
             "Unable to delete blog."
         );
-
     }
-
 }
 
 
@@ -1759,14 +1445,10 @@ document.addEventListener(
     function () {
 
         document
-            .querySelectorAll(
-                ".blog-menu"
-            )
+            .querySelectorAll(".blog-menu")
             .forEach(function (menu) {
 
-                menu.classList.remove(
-                    "show"
-                );
+                menu.classList.remove("show");
 
             });
 
@@ -1783,19 +1465,14 @@ function loadLoggedInUser() {
     const user =
         getLoggedInUser();
 
-
     if (!user) {
         return;
     }
-
-
-    /* DASHBOARD NAME */
 
     const dashboardUserName =
         document.getElementById(
             "dashboardUserName"
         );
-
 
     if (
         dashboardUserName &&
@@ -1804,17 +1481,12 @@ function loadLoggedInUser() {
 
         dashboardUserName.textContent =
             `${user.name}!`;
-
     }
-
-
-    /* PROFILE NAME */
 
     const profileName =
         document.querySelector(
             ".profile-user h3"
         );
-
 
     if (
         profileName &&
@@ -1823,17 +1495,12 @@ function loadLoggedInUser() {
 
         profileName.textContent =
             user.name;
-
     }
-
-
-    /* PROFILE EMAIL */
 
     const profileDetails =
         document.querySelector(
             ".profile-details"
         );
-
 
     if (
         profileDetails &&
@@ -1845,24 +1512,17 @@ function loadLoggedInUser() {
                 "div:first-child strong"
             );
 
-
         if (emailStrong) {
 
             emailStrong.textContent =
                 user.email;
-
         }
-
     }
-
-
-    /* PROFILE AVATAR */
 
     const profileAvatar =
         document.querySelector(
             ".profile-avatar"
         );
-
 
     if (
         profileAvatar &&
@@ -1873,9 +1533,7 @@ function loadLoggedInUser() {
             user.name
                 .charAt(0)
                 .toUpperCase();
-
     }
-
 }
 
 
@@ -1887,21 +1545,13 @@ document.addEventListener(
     "DOMContentLoaded",
     function () {
 
-        /* PROTECT DASHBOARD */
-
         protectDashboard();
-
-
-        /* LOAD DATA */
 
         loadBlogs();
 
         loadDashboardBlogs();
 
         loadLoggedInUser();
-
-
-        /* LOGOUT */
 
         setupLogout();
 

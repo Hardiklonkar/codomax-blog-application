@@ -1,4 +1,3 @@
-
 require("dotenv").config();
 
 const express = require("express");
@@ -10,9 +9,9 @@ const { createClient } = require("@supabase/supabase-js");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// =========================
+// =====================================================
 // ENVIRONMENT CHECK
-// =========================
+// =====================================================
 
 console.log("SUPABASE URL:", process.env.SUPABASE_URL);
 console.log(
@@ -37,36 +36,38 @@ if (
     process.exit(1);
 }
 
-// =========================
+// =====================================================
 // SUPABASE
-// =========================
+// =====================================================
 
 const supabase = createClient(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-// =========================
+// =====================================================
 // MIDDLEWARE
-// =========================
+// =====================================================
 
-app.use(cors());
+app.use(
+    cors({
+        origin: "*",
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization"]
+    })
+);
+
 app.use(express.json());
 
-// =========================
+// =====================================================
 // JWT AUTH MIDDLEWARE
-// =========================
+// =====================================================
 
 const authenticateToken = (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
 
-        console.log("=================================");
-        console.log("AUTH HEADER:", authHeader);
-
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            console.log("❌ NO BEARER TOKEN");
-
             return res.status(401).json({
                 success: false,
                 message: "Access denied. No token provided."
@@ -75,26 +76,17 @@ const authenticateToken = (req, res, next) => {
 
         const token = authHeader.split(" ")[1];
 
-        console.log(
-            "TOKEN RECEIVED:",
-            token
-                ? `${token.substring(0, 20)}...${token.substring(token.length - 10)}`
-                : "NO TOKEN"
-        );
-
-        console.log(
-            "JWT SECRET LENGTH:",
-            process.env.JWT_SECRET?.length
-        );
+        if (!token) {
+            return res.status(401).json({
+                success: false,
+                message: "Access denied. No token provided."
+            });
+        }
 
         const decoded = jwt.verify(
             token,
             process.env.JWT_SECRET
         );
-
-        console.log("✅ TOKEN VERIFIED");
-        console.log("DECODED USER:", decoded);
-        console.log("=================================");
 
         req.user = decoded;
 
@@ -102,7 +94,6 @@ const authenticateToken = (req, res, next) => {
 
     } catch (error) {
         console.error("❌ AUTH ERROR:", error.message);
-        console.log("=================================");
 
         return res.status(401).json({
             success: false,
@@ -111,35 +102,33 @@ const authenticateToken = (req, res, next) => {
     }
 };
 
-// =========================
+// =====================================================
 // HOME
-// =========================
+// =====================================================
 
 app.get("/", (req, res) => {
-    res.json({
+    res.status(200).json({
         success: true,
         message: "BlogSphere Backend API is running 🚀"
     });
 });
 
-// =========================
+// =====================================================
 // TEST API
-// =========================
+// =====================================================
 
 app.get("/api/test", (req, res) => {
-    res.json({
+    res.status(200).json({
         success: true,
         message: "API connection successful!"
     });
 });
 
-// =========================
+// =====================================================
 // REGISTER
-// =========================
+// =====================================================
 
 app.post("/api/auth/register", async (req, res) => {
-    console.log("REGISTER BODY:", req.body);
-
     try {
         const { name, email, password } = req.body;
 
@@ -226,13 +215,11 @@ app.post("/api/auth/register", async (req, res) => {
     }
 });
 
-// =========================
+// =====================================================
 // LOGIN
-// =========================
+// =====================================================
 
 app.post("/api/auth/login", async (req, res) => {
-    console.log("LOGIN BODY:", req.body);
-
     try {
         const { email, password } = req.body;
 
@@ -283,10 +270,6 @@ app.post("/api/auth/login", async (req, res) => {
             });
         }
 
-        // =========================
-        // CREATE JWT TOKEN
-        // =========================
-
         const token = jwt.sign(
             {
                 userId: data.id,
@@ -297,8 +280,6 @@ app.post("/api/auth/login", async (req, res) => {
                 expiresIn: "1d"
             }
         );
-
-        console.log("✅ JWT CREATED FOR USER:", data.id);
 
         return res.status(200).json({
             success: true,
@@ -329,11 +310,11 @@ app.get(
     "/api/auth/profile",
     authenticateToken,
     async (req, res) => {
-
-        console.log("PROFILE USER ID:", req.user.userId);
-
         try {
-            const { data, error } = await supabase
+            const {
+                data,
+                error
+            } = await supabase
                 .from("users")
                 .select("id, name, email")
                 .eq("id", req.user.userId)
@@ -370,9 +351,6 @@ app.post(
     "/api/blogs",
     authenticateToken,
     async (req, res) => {
-
-        console.log("CREATE BLOG BODY:", req.body);
-
         try {
             const {
                 title,
@@ -502,14 +480,13 @@ app.get("/api/blogs", async (req, res) => {
 });
 
 // =====================================================
-// GET MY BLOGS - PROTECTED DASHBOARD
+// GET MY BLOGS - PROTECTED
 // =====================================================
 
 app.get(
     "/api/blogs/my-blogs",
     authenticateToken,
     async (req, res) => {
-
         try {
             const {
                 data: user,
@@ -622,10 +599,6 @@ app.put(
     "/api/blogs/:id",
     authenticateToken,
     async (req, res) => {
-
-        console.log("UPDATE BLOG ID:", req.params.id);
-        console.log("UPDATE BLOG BODY:", req.body);
-
         try {
             const { id } = req.params;
 
@@ -752,12 +725,6 @@ app.delete(
     "/api/blogs/:id",
     authenticateToken,
     async (req, res) => {
-
-        console.log(
-            "DELETE BLOG ID:",
-            req.params.id
-        );
-
         try {
             const { id } = req.params;
 
@@ -847,12 +814,19 @@ app.delete(
 );
 
 // =====================================================
-// START SERVER
+// VERCEL + LOCAL SERVER
 // =====================================================
 
-app.listen(PORT, () => {
-    console.log(
-        `🚀 BlogSphere Backend running on http://localhost:${PORT}`
-    );
-});
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(
+            `🚀 BlogSphere Backend running on http://localhost:${PORT}`
+        );
+    });
+}
 
+// =====================================================
+// EXPORT FOR VERCEL
+// =====================================================
+
+module.exports = app;
