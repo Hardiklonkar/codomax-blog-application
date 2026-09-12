@@ -1,1148 +1,1210 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta charset="UTF-8">
 
-    <title>BlogSphere | Edit Blog</title>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <link
-        rel="stylesheet"
-        href="css/style.css"
-    >
+<title>BlogSphere | Edit Blog</title>
+
+<link
+    rel="stylesheet"
+    href="css/style.css"
+>
+
 
 </head>
 
-
 <body>
 
+<!-- ================= NAVBAR ================= -->
 
-    <!-- ================= NAVBAR ================= -->
+<header class="navbar">
 
-    <header class="navbar">
+    <div class="container nav-container">
 
-        <div class="container nav-container">
+        <a
+            href="index.html"
+            class="logo"
+        >
+            Blog<span>Sphere</span>
+        </a>
 
-            <a
-                href="index.html"
-                class="logo"
-            >
-                Blog<span>Sphere</span>
+
+        <nav class="nav-links">
+
+            <a href="index.html">
+                Home
             </a>
 
+            <a href="index.html#blogs">
+                Blogs
+            </a>
 
-            <nav class="nav-links">
-
-                <a href="index.html">
-                    Home
-                </a>
-
-                <a href="index.html#blogs">
-                    Blogs
-                </a>
-
-                <a
-                    href="dashboard.html"
-                    class="active"
-                >
-                    Dashboard
-                </a>
-
-                <a
-                    href="create-blog.html"
-                    class="nav-btn"
-                >
-                    + Create Blog
-                </a>
-
-            </nav>
-
-
-            <button
-                class="menu-btn"
-                id="menuBtn"
-                type="button"
+            <a
+                href="dashboard.html"
+                class="active"
             >
-                ☰
-            </button>
+                Dashboard
+            </a>
 
-        </div>
+            <a
+                href="create-blog.html"
+                class="nav-btn"
+            >
+                + Create Blog
+            </a>
 
-    </header>
-
-
-
-    <!-- ================= EDIT BLOG ================= -->
-
-    <main class="create-blog-section">
-
-        <div class="container">
+        </nav>
 
 
-            <!-- HEADER -->
+        <button
+            class="menu-btn"
+            id="menuBtn"
+            type="button"
+        >
+            ☰
+        </button>
 
-            <div class="create-header">
+    </div>
 
-                <div>
-
-                    <span class="section-label">
-                        CONTENT CREATOR
-                    </span>
-
-
-                    <h1>
-                        Edit Your <span>Blog</span>
-                    </h1>
+</header>
 
 
-                    <p>
-                        Update your blog content and
-                        publish the changes.
-                    </p>
 
-                </div>
+<!-- ================= EDIT BLOG ================= -->
+
+<main class="create-blog-section">
+
+    <div class="container">
 
 
-                <a
-                    href="dashboard.html"
-                    class="secondary-btn"
-                >
-                    ← Back to Dashboard
-                </a>
+        <!-- HEADER -->
+
+        <div class="create-header">
+
+            <div>
+
+                <span class="section-label">
+                    CONTENT CREATOR
+                </span>
+
+
+                <h1>
+                    Edit Your <span>Blog</span>
+                </h1>
+
+
+                <p>
+                    Update your blog content and
+                    publish the changes.
+                </p>
 
             </div>
 
 
+            <a
+                href="dashboard.html"
+                class="secondary-btn"
+            >
+                ← Back to Dashboard
+            </a>
 
-            <!-- ================= LAYOUT ================= -->
+        </div>
 
-            <div class="create-blog-layout">
 
 
-                <!-- ================= FORM ================= -->
+        <!-- ================= LAYOUT ================= -->
 
-                <section class="create-blog-card">
+        <div class="create-blog-layout">
 
-                    <form id="editBlogForm">
 
+            <!-- ================= FORM ================= -->
 
-                        <!-- TITLE -->
+            <section class="create-blog-card">
 
-                        <div class="form-group">
+                <form id="editBlogForm">
 
-                            <label for="editBlogTitle">
-                                Blog Title
-                            </label>
 
+                    <!-- TITLE -->
 
-                            <input
-                                type="text"
-                                id="editBlogTitle"
-                                placeholder="Enter blog title"
-                                maxlength="100"
-                                required
-                            >
+                    <div class="form-group">
 
-                        </div>
+                        <label for="editBlogTitle">
+                            Blog Title
+                        </label>
 
 
-
-                        <!-- CATEGORY + READ TIME -->
-
-                        <div class="form-row">
-
-
-                            <div class="form-group">
-
-                                <label for="editBlogCategory">
-                                    Category
-                                </label>
-
-
-                                <select
-                                    id="editBlogCategory"
-                                    required
-                                >
-
-                                    <option value="">
-                                        Select category
-                                    </option>
-
-                                    <option value="Technology">
-                                        Technology
-                                    </option>
-
-                                    <option value="Programming">
-                                        Programming
-                                    </option>
-
-                                    <option value="Web Development">
-                                        Web Development
-                                    </option>
-
-                                    <option value="Career">
-                                        Career
-                                    </option>
-
-                                    <option value="AI & ML">
-                                        AI & ML
-                                    </option>
-
-                                    <option value="Other">
-                                        Other
-                                    </option>
-
-                                </select>
-
-                            </div>
-
-
-
-                            <div class="form-group">
-
-                                <label for="editReadTime">
-                                    Estimated Read Time
-                                </label>
-
-
-                                <select
-                                    id="editReadTime"
-                                >
-
-                                    <option value="">
-                                        Select time
-                                    </option>
-
-                                    <option value="3 min">
-                                        3 min read
-                                    </option>
-
-                                    <option value="5 min">
-                                        5 min read
-                                    </option>
-
-                                    <option value="7 min">
-                                        7 min read
-                                    </option>
-
-                                    <option value="10 min">
-                                        10 min read
-                                    </option>
-
-                                </select>
-
-                            </div>
-
-
-                        </div>
-
-
-
-                        <!-- COVER IMAGE -->
-
-                        <div class="form-group">
-
-                            <label for="editBlogImage">
-                                Cover Image URL
-                            </label>
-
-
-                            <input
-                                type="url"
-                                id="editBlogImage"
-                                placeholder="https://example.com/image.jpg"
-                            >
-
-
-                            <small class="input-hint">
-                                Optional cover image.
-                            </small>
-
-                        </div>
-
-
-
-                        <!-- CONTENT -->
-
-                        <div class="form-group">
-
-                            <label for="editBlogContent">
-                                Blog Content
-                            </label>
-
-
-                            <textarea
-                                id="editBlogContent"
-                                rows="12"
-                                placeholder="Write your blog content..."
-                                required
-                            ></textarea>
-
-                        </div>
-
-
-
-                        <!-- TAGS -->
-
-                        <div class="form-group">
-
-                            <label for="editBlogTags">
-                                Tags
-                            </label>
-
-
-                            <input
-                                type="text"
-                                id="editBlogTags"
-                                placeholder="javascript, coding, web development"
-                            >
-
-
-                            <small class="input-hint">
-                                Separate multiple tags using commas.
-                            </small>
-
-                        </div>
-
-
-
-                        <!-- ACTIONS -->
-
-                        <div class="create-actions">
-
-
-                            <a
-                                href="dashboard.html"
-                                class="secondary-btn"
-                            >
-                                Cancel
-                            </a>
-
-
-                            <button
-                                type="submit"
-                                class="primary-btn"
-                                id="updateBlogBtn"
-                            >
-                                Update Blog →
-                            </button>
-
-
-                        </div>
-
-
-                    </form>
-
-                </section>
-
-
-
-                <!-- ================= PREVIEW ================= -->
-
-                <aside class="blog-preview-panel">
-
-
-                    <div class="preview-heading">
-
-                        <span class="section-label">
-                            LIVE PREVIEW
-                        </span>
-
-
-                        <h2>
-                            Updated Blog
-                        </h2>
+                        <input
+                            type="text"
+                            id="editBlogTitle"
+                            placeholder="Enter blog title"
+                            maxlength="100"
+                            required
+                        >
 
                     </div>
 
 
 
-                    <article class="live-preview">
+                    <!-- CATEGORY + READ TIME -->
+
+                    <div class="form-row">
 
 
-                        <!-- IMAGE -->
+                        <div class="form-group">
 
-                        <div
-                            class="preview-image"
-                            id="editPreviewImage"
-                        >
-                            📝
+                            <label for="editBlogCategory">
+                                Category
+                            </label>
+
+
+                            <select
+                                id="editBlogCategory"
+                                required
+                            >
+
+                                <option value="">
+                                    Select category
+                                </option>
+
+                                <option value="Technology">
+                                    Technology
+                                </option>
+
+                                <option value="Programming">
+                                    Programming
+                                </option>
+
+                                <option value="Web Development">
+                                    Web Development
+                                </option>
+
+                                <option value="Career">
+                                    Career
+                                </option>
+
+                                <option value="AI & ML">
+                                    AI & ML
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
                         </div>
 
 
 
-                        <!-- CONTENT -->
+                        <div class="form-group">
 
-                        <div class="live-preview-content">
+                            <label for="editReadTime">
+                                Estimated Read Time
+                            </label>
 
 
-                            <span
-                                class="category"
-                                id="editPreviewCategory"
+                            <select
+                                id="editReadTime"
                             >
-                                Category
-                            </span>
+
+                                <option value="">
+                                    Select time
+                                </option>
+
+                                <option value="3 min">
+                                    3 min read
+                                </option>
+
+                                <option value="5 min">
+                                    5 min read
+                                </option>
+
+                                <option value="7 min">
+                                    7 min read
+                                </option>
+
+                                <option value="10 min">
+                                    10 min read
+                                </option>
+
+                            </select>
+
+                        </div>
 
 
-                            <h3 id="editPreviewTitle">
-                                Your blog title will appear here
-                            </h3>
+                    </div>
 
 
-                            <p id="editPreviewContent">
-                                Your blog content preview
-                                will appear here.
-                            </p>
+
+                    <!-- COVER IMAGE -->
+
+                    <div class="form-group">
+
+                        <label for="editBlogImage">
+                            Cover Image URL
+                        </label>
 
 
-                            <div class="preview-meta">
-
-                                <div class="author">
-
-
-                                    <div
-                                        class="author-avatar"
-                                        id="editPreviewAvatar"
-                                    >
-                                        H
-                                    </div>
+                        <input
+                            type="url"
+                            id="editBlogImage"
+                            placeholder="https://example.com/image.jpg"
+                        >
 
 
-                                    <div>
+                        <small class="input-hint">
+                            Optional cover image.
+                        </small>
 
-                                        <strong id="editPreviewAuthor">
-                                            Hardik Lonkar
-                                        </strong>
+                    </div>
 
 
-                                        <small>
-                                            Updated
-                                        </small>
 
-                                    </div>
+                    <!-- CONTENT -->
 
+                    <div class="form-group">
+
+                        <label for="editBlogContent">
+                            Blog Content
+                        </label>
+
+
+                        <textarea
+                            id="editBlogContent"
+                            rows="12"
+                            placeholder="Write your blog content..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+
+                    <!-- TAGS -->
+
+                    <div class="form-group">
+
+                        <label for="editBlogTags">
+                            Tags
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="editBlogTags"
+                            placeholder="javascript, coding, web development"
+                        >
+
+
+                        <small class="input-hint">
+                            Separate multiple tags using commas.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="create-actions">
+
+
+                        <a
+                            href="dashboard.html"
+                            class="secondary-btn"
+                        >
+                            Cancel
+                        </a>
+
+
+                        <button
+                            type="submit"
+                            class="primary-btn"
+                            id="updateBlogBtn"
+                        >
+                            Update Blog →
+                        </button>
+
+
+                    </div>
+
+
+                </form>
+
+            </section>
+
+
+
+            <!-- ================= PREVIEW ================= -->
+
+            <aside class="blog-preview-panel">
+
+
+                <div class="preview-heading">
+
+                    <span class="section-label">
+                        LIVE PREVIEW
+                    </span>
+
+
+                    <h2>
+                        Updated Blog
+                    </h2>
+
+                </div>
+
+
+
+                <article class="live-preview">
+
+
+                    <!-- IMAGE -->
+
+                    <div
+                        class="preview-image"
+                        id="editPreviewImage"
+                    >
+                        📝
+                    </div>
+
+
+
+                    <!-- CONTENT -->
+
+                    <div class="live-preview-content">
+
+
+                        <span
+                            class="category"
+                            id="editPreviewCategory"
+                        >
+                            Category
+                        </span>
+
+
+                        <h3 id="editPreviewTitle">
+                            Your blog title will appear here
+                        </h3>
+
+
+                        <p id="editPreviewContent">
+                            Your blog content preview
+                            will appear here.
+                        </p>
+
+
+                        <div class="preview-meta">
+
+                            <div class="author">
+
+
+                                <div
+                                    class="author-avatar"
+                                    id="editPreviewAvatar"
+                                >
+                                    H
+                                </div>
+
+
+                                <div>
+
+                                    <strong id="editPreviewAuthor">
+                                        Hardik Lonkar
+                                    </strong>
+
+
+                                    <small>
+                                        Updated
+                                    </small>
 
                                 </div>
 
-                            </div>
 
+                            </div>
 
                         </div>
 
 
-                    </article>
+                    </div>
 
 
-                </aside>
+                </article>
 
 
-            </div>
+            </aside>
 
 
         </div>
 
-    </main>
+
+    </div>
+
+</main>
 
 
 
-    <!-- ================= FOOTER ================= -->
+<!-- ================= FOOTER ================= -->
 
-    <footer class="footer">
+<footer class="footer">
 
-        <div class="footer-bottom">
+    <div class="footer-bottom">
 
-            <p>
-                © 2026 BlogSphere.
-                All rights reserved.
-            </p>
-
-
-            <p>
-                Built with ❤️ using
-                HTML, CSS & JavaScript
-            </p>
-
-        </div>
-
-    </footer>
+        <p>
+            © 2026 BlogSphere.
+            All rights reserved.
+        </p>
 
 
+        <p>
+            Built with ❤️ using
+            HTML, CSS & JavaScript
+        </p>
 
-    <!-- ================= SCRIPT ================= -->
+    </div>
 
-    <script src="js/script.js"></script>
-
-
-    <script>
-
-        /* =========================================================
-           API CONFIGURATION
-        ========================================================= */
-
-        const EDIT_API_URL = "http://localhost:5000";
+</footer>
 
 
-        /* =========================================================
-           GET BLOG ID FROM URL
-           
-           Example:
-           edit.html?id=5
-        ========================================================= */
 
-        const params =
-            new URLSearchParams(
-                window.location.search
-            );
+<!-- ================= MAIN SCRIPT ================= -->
 
-        const blogId =
-            params.get("id");
+<script src="js/script.js"></script>
 
 
-        /* =========================================================
-           ELEMENTS
-        ========================================================= */
+<!-- ================= EDIT BLOG SCRIPT ================= -->
 
-        const titleInput =
-            document.getElementById(
-                "editBlogTitle"
-            );
+<script>
 
-        const categoryInput =
-            document.getElementById(
-                "editBlogCategory"
-            );
+    /* =========================================================
+       API CONFIGURATION
+    ========================================================= */
 
-        const readTimeInput =
-            document.getElementById(
-                "editReadTime"
-            );
-
-        const imageInput =
-            document.getElementById(
-                "editBlogImage"
-            );
-
-        const contentInput =
-            document.getElementById(
-                "editBlogContent"
-            );
-
-        const tagsInput =
-            document.getElementById(
-                "editBlogTags"
-            );
+    const EDIT_API_URL =
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1"
+            ? "http://localhost:5000"
+            : "https://YOUR-VERCEL-BACKEND.vercel.app";
 
 
-        const previewTitle =
-            document.getElementById(
-                "editPreviewTitle"
-            );
+    /* =========================================================
+       GET BLOG ID FROM URL
+    ========================================================= */
 
-        const previewCategory =
-            document.getElementById(
-                "editPreviewCategory"
-            );
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
 
-        const previewContent =
-            document.getElementById(
-                "editPreviewContent"
-            );
-
-        const previewImage =
-            document.getElementById(
-                "editPreviewImage"
-            );
-
-        const previewAuthor =
-            document.getElementById(
-                "editPreviewAuthor"
-            );
-
-        const previewAvatar =
-            document.getElementById(
-                "editPreviewAvatar"
-            );
-
-        const editBlogForm =
-            document.getElementById(
-                "editBlogForm"
-            );
-
-        const updateBlogBtn =
-            document.getElementById(
-                "updateBlogBtn"
-            );
+    const blogId =
+        params.get("id");
 
 
-        /* =========================================================
-           GET LOGGED-IN USER
-        ========================================================= */
+    /* =========================================================
+       ELEMENTS
+    ========================================================= */
 
-        function getLoggedInUser() {
+    const titleInput =
+        document.getElementById(
+            "editBlogTitle"
+        );
 
-            try {
+    const categoryInput =
+        document.getElementById(
+            "editBlogCategory"
+        );
 
-                const storedUser =
-                    localStorage.getItem(
-                        "loggedInUser"
-                    );
+    const readTimeInput =
+        document.getElementById(
+            "editReadTime"
+        );
 
-                if (!storedUser) {
-                    return null;
-                }
+    const imageInput =
+        document.getElementById(
+            "editBlogImage"
+        );
 
-                return JSON.parse(
-                    storedUser
+    const contentInput =
+        document.getElementById(
+            "editBlogContent"
+        );
+
+    const tagsInput =
+        document.getElementById(
+            "editBlogTags"
+        );
+
+
+    const previewTitle =
+        document.getElementById(
+            "editPreviewTitle"
+        );
+
+    const previewCategory =
+        document.getElementById(
+            "editPreviewCategory"
+        );
+
+    const previewContent =
+        document.getElementById(
+            "editPreviewContent"
+        );
+
+    const previewImage =
+        document.getElementById(
+            "editPreviewImage"
+        );
+
+    const previewAuthor =
+        document.getElementById(
+            "editPreviewAuthor"
+        );
+
+    const previewAvatar =
+        document.getElementById(
+            "editPreviewAvatar"
+        );
+
+    const editBlogForm =
+        document.getElementById(
+            "editBlogForm"
+        );
+
+    const updateBlogBtn =
+        document.getElementById(
+            "updateBlogBtn"
+        );
+
+
+    /* =========================================================
+       GET TOKEN
+    ========================================================= */
+
+    function getEditToken() {
+
+        return localStorage.getItem("token");
+
+    }
+
+
+    /* =========================================================
+       GET LOGGED-IN USER
+    ========================================================= */
+
+    function getEditUser() {
+
+        try {
+
+            const storedUser =
+                localStorage.getItem(
+                    "loggedInUser"
                 );
 
-            } catch (error) {
-
-                console.error(
-                    "Logged-in user error:",
-                    error
-                );
-
+            if (!storedUser) {
                 return null;
             }
 
-        }
+            return JSON.parse(
+                storedUser
+            );
 
+        } catch (error) {
 
-        /* =========================================================
-           UPDATE AUTHOR PREVIEW
-        ========================================================= */
+            console.error(
+                "Logged-in user error:",
+                error
+            );
 
-        function updateAuthorPreview() {
-
-            const user =
-                getLoggedInUser();
-
-            const author =
-                user?.name ||
-                user?.email ||
-                "Hardik Lonkar";
-
-
-            if (previewAuthor) {
-
-                previewAuthor.textContent =
-                    author;
-
-            }
-
-
-            if (previewAvatar) {
-
-                previewAvatar.textContent =
-                    author
-                        .charAt(0)
-                        .toUpperCase();
-
-            }
+            return null;
 
         }
 
+    }
 
-        /* =========================================================
-           LOAD BLOG FOR EDIT
-        ========================================================= */
 
-        async function loadBlogForEdit() {
+    /* =========================================================
+       UPDATE AUTHOR PREVIEW
+    ========================================================= */
 
-            if (!blogId) {
+    function updateAuthorPreview() {
+
+        const user =
+            getEditUser();
+
+        const author =
+            user?.name ||
+            user?.email ||
+            "Hardik Lonkar";
+
+
+        if (previewAuthor) {
+
+            previewAuthor.textContent =
+                author;
+
+        }
+
+
+        if (previewAvatar) {
+
+            previewAvatar.textContent =
+                author
+                    .charAt(0)
+                    .toUpperCase();
+
+        }
+
+    }
+
+
+    /* =========================================================
+       LOAD BLOG FOR EDIT
+    ========================================================= */
+
+    async function loadBlogForEdit() {
+
+        if (!blogId) {
+
+            alert(
+                "Blog ID is missing."
+            );
+
+            window.location.href =
+                "dashboard.html";
+
+            return;
+
+        }
+
+
+        const token =
+            getEditToken();
+
+
+        if (!token) {
+
+            alert(
+                "Please login first."
+            );
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${EDIT_API_URL}/api/blogs/${encodeURIComponent(blogId)}`,
+                    {
+                        method: "GET",
+
+                        headers: {
+                            "Authorization":
+                                `Bearer ${token}`
+                        }
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (response.status === 401) {
 
                 alert(
-                    "Blog ID is missing."
+                    "Session expired. Please login again."
+                );
+
+                localStorage.removeItem(
+                    "token"
+                );
+
+                localStorage.removeItem(
+                    "loggedInUser"
                 );
 
                 window.location.href =
-                    "dashboard.html";
+                    "login.html";
 
                 return;
+
             }
 
 
-            try {
+            if (
+                !response.ok ||
+                !data.success
+            ) {
 
-                const response =
-                    await fetch(
-                        `${EDIT_API_URL}/api/blogs/${encodeURIComponent(blogId)}`
-                    );
-
-
-                const data =
-                    await response.json();
-
-
-                if (
-                    !response.ok ||
-                    !data.success
-                ) {
-
-                    throw new Error(
-                        data.message ||
-                        "Unable to load blog."
-                    );
-
-                }
-
-
-                const blog =
-                    data.blog;
-
-
-                /* =================================================
-                   TITLE
-                ================================================= */
-
-                titleInput.value =
-                    blog.title || "";
-
-
-                /* =================================================
-                   CATEGORY
-                ================================================= */
-
-                categoryInput.value =
-                    blog.category || "";
-
-
-                /* =================================================
-                   READ TIME
-                ================================================= */
-
-                readTimeInput.value =
-                    blog.read_time || "";
-
-
-                /* =================================================
-                   COVER IMAGE
-                ================================================= */
-
-                imageInput.value =
-                    blog.cover_image || "";
-
-
-                /* =================================================
-                   CONTENT
-                ================================================= */
-
-                contentInput.value =
-                    blog.content || "";
-
-
-                /* =================================================
-                   TAGS
-                ================================================= */
-
-                if (
-                    Array.isArray(blog.tags)
-                ) {
-
-                    tagsInput.value =
-                        blog.tags.join(", ");
-
-                } else {
-
-                    tagsInput.value =
-                        "";
-
-                }
-
-
-                /* =================================================
-                   AUTHOR
-                ================================================= */
-
-                updateAuthorPreview();
-
-
-                /* =================================================
-                   PREVIEW
-                ================================================= */
-
-                updatePreview();
-
-            } catch (error) {
-
-                console.error(
-                    "Load Edit Blog Error:",
-                    error
-                );
-
-
-                alert(
-                    error.message ||
+                throw new Error(
+                    data.message ||
                     "Unable to load blog."
                 );
 
-
-                window.location.href =
-                    "dashboard.html";
-
-            }
-
-        }
-
-
-        /* =========================================================
-           LIVE PREVIEW
-        ========================================================= */
-
-        function updatePreview() {
-
-            if (!titleInput) {
-                return;
             }
 
 
-            /* TITLE */
-
-            previewTitle.textContent =
-                titleInput.value.trim() ||
-                "Your blog title will appear here";
+            const blog =
+                data.blog;
 
 
-            /* CATEGORY */
+            /* =================================================
+               FILL FORM
+            ================================================= */
 
-            previewCategory.textContent =
-                categoryInput.value ||
-                "Category";
-
-
-            /* CONTENT */
-
-            previewContent.textContent =
-                contentInput.value.trim() ||
-                "Your blog content preview will appear here.";
+            titleInput.value =
+                blog.title || "";
 
 
-            /* IMAGE */
-
-            const image =
-                imageInput.value.trim();
+            categoryInput.value =
+                blog.category || "";
 
 
-            if (image) {
+            readTimeInput.value =
+                blog.read_time || "";
 
-                previewImage.style.backgroundImage =
-                    `url("${image}")`;
 
-                previewImage.style.backgroundSize =
-                    "cover";
+            imageInput.value =
+                blog.cover_image || "";
 
-                previewImage.style.backgroundPosition =
-                    "center";
 
-                previewImage.style.backgroundRepeat =
-                    "no-repeat";
+            contentInput.value =
+                blog.content || "";
 
-                previewImage.textContent =
-                    "";
+
+            if (
+                Array.isArray(blog.tags)
+            ) {
+
+                tagsInput.value =
+                    blog.tags.join(", ");
 
             } else {
 
-                previewImage.style.backgroundImage =
-                    "none";
-
-                previewImage.textContent =
-                    "📝";
+                tagsInput.value =
+                    "";
 
             }
 
 
-            /* AUTHOR */
-
             updateAuthorPreview();
 
-        }
+            updatePreview();
 
 
-        /* =========================================================
-           INPUT EVENTS
-        ========================================================= */
+        } catch (error) {
 
-        if (titleInput) {
-
-            titleInput.addEventListener(
-                "input",
-                updatePreview
+            console.error(
+                "Load Edit Blog Error:",
+                error
             );
 
-        }
 
-
-        if (categoryInput) {
-
-            categoryInput.addEventListener(
-                "change",
-                updatePreview
+            alert(
+                error.message ||
+                "Unable to load blog."
             );
 
-        }
 
-
-        if (contentInput) {
-
-            contentInput.addEventListener(
-                "input",
-                updatePreview
-            );
+            window.location.href =
+                "dashboard.html";
 
         }
 
+    }
 
-        if (imageInput) {
 
-            imageInput.addEventListener(
-                "input",
-                updatePreview
-            );
+    /* =========================================================
+       LIVE PREVIEW
+    ========================================================= */
+
+    function updatePreview() {
+
+        if (!titleInput) {
+            return;
+        }
+
+
+        previewTitle.textContent =
+            titleInput.value.trim() ||
+            "Your blog title will appear here";
+
+
+        previewCategory.textContent =
+            categoryInput.value ||
+            "Category";
+
+
+        previewContent.textContent =
+            contentInput.value.trim() ||
+            "Your blog content preview will appear here";
+
+
+        const image =
+            imageInput.value.trim();
+
+
+        if (image) {
+
+            previewImage.style.backgroundImage =
+                `url("${image}")`;
+
+            previewImage.style.backgroundSize =
+                "cover";
+
+            previewImage.style.backgroundPosition =
+                "center";
+
+            previewImage.style.backgroundRepeat =
+                "no-repeat";
+
+            previewImage.textContent =
+                "";
+
+        } else {
+
+            previewImage.style.backgroundImage =
+                "none";
+
+            previewImage.textContent =
+                "📝";
 
         }
 
 
-        /* =========================================================
-           UPDATE BLOG
-        ========================================================= */
+        updateAuthorPreview();
 
-        if (editBlogForm) {
-
-            editBlogForm.addEventListener(
-                "submit",
-                async function (event) {
-
-                    event.preventDefault();
+    }
 
 
-                    /* =============================================
-                       GET USER
-                    ============================================= */
+    /* =========================================================
+       INPUT EVENTS
+    ========================================================= */
 
-                    const user =
-                        getLoggedInUser();
+    if (titleInput) {
 
+        titleInput.addEventListener(
+            "input",
+            updatePreview
+        );
 
-                    const author =
-                        user?.name ||
-                        user?.email ||
-                        "Hardik Lonkar";
-
-
-                    /* =============================================
-                       GET FORM VALUES
-                    ============================================= */
-
-                    const title =
-                        titleInput.value.trim();
+    }
 
 
-                    const category =
-                        categoryInput.value.trim();
+    if (categoryInput) {
+
+        categoryInput.addEventListener(
+            "change",
+            updatePreview
+        );
+
+    }
 
 
-                    const content =
-                        contentInput.value.trim();
+    if (contentInput) {
+
+        contentInput.addEventListener(
+            "input",
+            updatePreview
+        );
+
+    }
 
 
-                    const readTime =
-                        readTimeInput.value.trim();
+    if (imageInput) {
+
+        imageInput.addEventListener(
+            "input",
+            updatePreview
+        );
+
+    }
 
 
-                    const coverImage =
-                        imageInput.value.trim();
+    /* =========================================================
+       UPDATE BLOG
+    ========================================================= */
+
+    if (editBlogForm) {
+
+        editBlogForm.addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
 
 
-                    const tagsValue =
-                        tagsInput.value.trim();
+                const token =
+                    getEditToken();
 
 
-                    const tags =
-                        tagsValue
-                            ? tagsValue
-                                .split(",")
-                                .map(
-                                    tag =>
-                                        tag.trim()
-                                )
-                                .filter(
-                                    tag =>
-                                        tag.length > 0
-                                )
-                            : [];
+                /* =============================================
+                   AUTH CHECK
+                ============================================= */
+
+                if (!token) {
+
+                    alert(
+                        "Please login first."
+                    );
+
+                    window.location.href =
+                        "login.html";
+
+                    return;
+
+                }
 
 
-                    /* =============================================
-                       VALIDATION
-                    ============================================= */
+                /* =============================================
+                   FORM VALUES
+                ============================================= */
+
+                const title =
+                    titleInput.value.trim();
+
+
+                const category =
+                    categoryInput.value.trim();
+
+
+                const content =
+                    contentInput.value.trim();
+
+
+                const readTime =
+                    readTimeInput.value.trim();
+
+
+                const coverImage =
+                    imageInput.value.trim();
+
+
+                const tagsValue =
+                    tagsInput.value.trim();
+
+
+                const tags =
+                    tagsValue
+                        ? tagsValue
+                            .split(",")
+                            .map(
+                                tag =>
+                                    tag.trim()
+                            )
+                            .filter(
+                                tag =>
+                                    tag.length > 0
+                            )
+                        : [];
+
+
+                /* =============================================
+                   VALIDATION
+                ============================================= */
+
+                if (
+                    !title ||
+                    !category ||
+                    !content
+                ) {
+
+                    alert(
+                        "Please complete all required fields."
+                    );
+
+                    return;
+
+                }
+
+
+                if (!blogId) {
+
+                    alert(
+                        "Blog ID is missing."
+                    );
+
+                    return;
+
+                }
+
+
+                /* =============================================
+                   DISABLE BUTTON
+                ============================================= */
+
+                updateBlogBtn.disabled =
+                    true;
+
+                updateBlogBtn.textContent =
+                    "Updating...";
+
+
+                try {
+
+                    /* =========================================
+                       PUT REQUEST
+                    ========================================= */
+
+                    const response =
+                        await fetch(
+                            `${EDIT_API_URL}/api/blogs/${encodeURIComponent(blogId)}`,
+                            {
+                                method: "PUT",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json",
+
+                                    "Authorization":
+                                        `Bearer ${token}`
+                                },
+
+                                body:
+                                    JSON.stringify({
+
+                                        title:
+                                            title,
+
+                                        category:
+                                            category,
+
+                                        content:
+                                            content,
+
+                                        tags:
+                                            tags,
+
+                                        coverImage:
+                                            coverImage,
+
+                                        readTime:
+                                            readTime
+
+                                    })
+
+                            }
+                        );
+
+
+                    const data =
+                        await response.json();
+
+
+                    /* =========================================
+                       TOKEN ERROR
+                    ========================================= */
 
                     if (
-                        !title ||
-                        !category ||
-                        !content
+                        response.status === 401
                     ) {
 
                         alert(
-                            "Please complete all required fields."
+                            "Session expired. Please login again."
                         );
 
-                        return;
-
-                    }
-
-
-                    if (!blogId) {
-
-                        alert(
-                            "Blog ID is missing."
+                        localStorage.removeItem(
+                            "token"
                         );
 
-                        return;
-
-                    }
-
-
-                    /* =============================================
-                       DISABLE BUTTON
-                    ============================================= */
-
-                    updateBlogBtn.disabled =
-                        true;
-
-                    updateBlogBtn.textContent =
-                        "Updating...";
-
-
-                    try {
-
-                        /* =========================================
-                           SEND PUT REQUEST
-                        ========================================= */
-
-                        const response =
-                            await fetch(
-                                `${EDIT_API_URL}/api/blogs/${encodeURIComponent(blogId)}`,
-                                {
-                                    method: "PUT",
-
-                                    headers: {
-                                        "Content-Type":
-                                            "application/json"
-                                    },
-
-                                    body:
-                                        JSON.stringify({
-
-                                            title:
-                                                title,
-
-                                            category:
-                                                category,
-
-                                            content:
-                                                content,
-
-                                            author:
-                                                author,
-
-                                            tags:
-                                                tags,
-
-                                            coverImage:
-                                                coverImage,
-
-                                            readTime:
-                                                readTime
-
-                                        })
-
-                                }
-                            );
-
-
-                        const data =
-                            await response.json();
-
-
-                        /* =========================================
-                           CHECK RESPONSE
-                        ========================================= */
-
-                        if (
-                            !response.ok ||
-                            !data.success
-                        ) {
-
-                            throw new Error(
-                                data.message ||
-                                "Blog update failed."
-                            );
-
-                        }
-
-
-                        /* =========================================
-                           SUCCESS
-                        ========================================= */
-
-                        alert(
-                            "Blog updated successfully! 🎉"
+                        localStorage.removeItem(
+                            "loggedInUser"
                         );
-
 
                         window.location.href =
-                            "dashboard.html";
+                            "login.html";
 
-
-                    } catch (error) {
-
-                        console.error(
-                            "Update Blog Error:",
-                            error
-                        );
-
-
-                        alert(
-                            error.message ||
-                            "Unable to update blog."
-                        );
-
-
-                        updateBlogBtn.disabled =
-                            false;
-
-                        updateBlogBtn.textContent =
-                            "Update Blog →";
+                        return;
 
                     }
 
+
+                    /* =========================================
+                       OTHER ERROR
+                    ========================================= */
+
+                    if (
+                        !response.ok ||
+                        !data.success
+                    ) {
+
+                        throw new Error(
+                            data.message ||
+                            "Blog update failed."
+                        );
+
+                    }
+
+
+                    /* =========================================
+                       SUCCESS
+                    ========================================= */
+
+                    alert(
+                        "Blog updated successfully! 🎉"
+                    );
+
+
+                    window.location.href =
+                        "dashboard.html";
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Update Blog Error:",
+                        error
+                    );
+
+
+                    alert(
+                        error.message ||
+                        "Unable to update blog."
+                    );
+
+
+                    updateBlogBtn.disabled =
+                        false;
+
+                    updateBlogBtn.textContent =
+                        "Update Blog →";
+
                 }
-            );
-
-        }
-
-
-        /* =========================================================
-           START
-        ========================================================= */
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            () => {
-
-                loadBlogForEdit();
 
             }
         );
 
-    </script>
+    }
 
+
+    /* =========================================================
+       START
+    ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            loadBlogForEdit();
+
+        }
+    );
+
+</script>
 
 </body>
 
